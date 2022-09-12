@@ -1,7 +1,3 @@
-<?php 
-    echo "<script>console.log('Hola');</script>";
-    
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,14 +7,16 @@
     <title>Inicio</title>
 </head>
 <body>
-    <ul>
-        <li><a href="01.php">ejercicio 1</a></li>
-        <li><a href="02.php">ejercicio 2</a></li>
-        <li><a href="03.php">ejercicio 3</a></li>
-        <li><a href="04.php">ejercicio 4</a></li>
-        <li><a href="05.php">ejercicio 5</a></li>
-        <li><a href="06.php">ejercicio 6</a></li>
-        <li><a href="07.php">ejercicio 7</a></li>
-    </ul>
+   <?php 
+        // echo "<script>console.log('Hola');</script>";
+        echo "<ul>";
+        $ficheros = scandir('./');
+        foreach($ficheros as $fich)
+        {
+            if(!is_dir($fich) && $fich!= 'index.php')
+                echo "<li><a href='".$fich."'>".$fich."</a></li>";
+        }
+        echo "</ul>";
+    ?>
 </body>
 </html>
