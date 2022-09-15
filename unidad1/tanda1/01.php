@@ -10,6 +10,7 @@
     <h2>Muestra la fecha actual con el formato: 17th  September 2021, Wednesday</h2>
     <div>
         <?php
+            date_default_timezone_set('Europe/Madrid');  //zona horaria  
             echo date("d\\t\h M Y, l");
         ?>
         <br>
@@ -19,9 +20,9 @@
     <div>
         <?php
             $ahora = time(); // ahora en segundos
-            $maxSeg = 325*24*3600; // segundos en un año (dias * horas en un dia * segundos en una hora)
-            $dias = ($maxSeg-$ahora) * 3600*24; // 
-            echo $dias;
+            $maxSeg = mktime(0,0,0,01,01,2023);
+            $dias = round( ($maxSeg-$ahora) / (60*60*24) ) ; // pasar de segundos a dias
+            echo $maxSeg.' - '.$ahora.' = '.$dias;
         ?>
         <br>
     </div>
@@ -43,8 +44,9 @@
     <div>
         <?php
             $ori="En la mañana del año se añora al ñu de gran tamaño que limpia con un paño";
+            echo "original: ".$ori."<br>";
             $texto = str_replace("ñ", "gn", $ori);
-            echo $texto;
+            echo "cambiada: ".$texto;
         ?>
         <br>
     </div>
@@ -52,7 +54,20 @@
     <h2>Función que devuelve un array con n números aleatorios entre limite1 y limite2</h2>
     <div>
         <?php
-            
+            function fun($i, $lim1, $lim2)
+            {
+                $arr=[];
+                for(; $i>0 ;$i--)
+                {
+                    if($lim1<$lim2)
+                        $n = random_int($lim1,$lim2);
+                    else
+                        $n = random_int($lim2,$lim1);
+                    array_push($arr,$n);
+                }
+                return $arr;
+            }
+            var_dump(fun(4, 1, 50));
         ?>
         <br>
     </div>
@@ -60,7 +75,15 @@
     <h2>Función que recibe una cadena y la devuelve cifrada.</h2>
     <div>
         <?php
-
+            //  “A”=>”20”, “H”=>”9R”, “M”=>”abcd”
+            $ori="Hola Amo Hermoso";
+            $texto = str_replace("H", "9R", $ori);
+            $texto = str_replace("h", "9R", $texto);
+            $texto = str_replace("A", "20", $texto);
+            $texto = str_replace("a", "20", $texto);
+            $texto = str_replace("M", "abcd", $texto);
+            $texto = str_replace("m", "abcd", $texto);
+            echo $texto;
         ?>
         <br>
     </div>
