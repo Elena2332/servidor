@@ -76,13 +76,10 @@
     <div>
         <?php
             //  “A”=>”20”, “H”=>”9R”, “M”=>”abcd”
-            $ori="Hola Amo Hermoso";
+            $ori="HOLA AMO HERMOSO";
             $texto = str_replace("H", "9R", $ori);
-            $texto = str_replace("h", "9R", $texto);
             $texto = str_replace("A", "20", $texto);
-            $texto = str_replace("a", "20", $texto);
             $texto = str_replace("M", "abcd", $texto);
-            $texto = str_replace("m", "abcd", $texto);
             echo $texto;
         ?>
         <br>
