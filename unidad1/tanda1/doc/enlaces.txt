@@ -1,0 +1,3 @@
+http://www.google.es,google
+http://www.yahoo.es,yahoo
+http://www.pepsi.com,pepsi

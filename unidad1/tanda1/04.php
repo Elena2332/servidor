@@ -25,7 +25,7 @@
                 $fila = "<tr>";
                 for($i=0 ; $i<count($sinRepes) ;$i++)
                 {
-                    $fila = $fila."<td><img src=".$sinRepes[$i]." alt=".$sinRepes[$i]." width='200' heigth='200'/></td>";
+                    $fila = $fila."<td><a href=".$sinRepes[$i]."><img src=".$sinRepes[$i]." alt=".$sinRepes[$i]." width='200' heigth='200'/></a></td>";
                     var_dump($fila);
                     if(($i+1) %3 == 0)
                     {
