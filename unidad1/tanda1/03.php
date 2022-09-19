@@ -11,7 +11,11 @@
     <div>
         <?php
             $arr=['Burgos','Miranda','Vitoria','Burgos','Aranda','Vitoria'];
-            
+            $sinRepes = array_unique($arr);
+            foreach($sinRepes as $i=>$ciu)
+            {
+                echo $i.'- '.$ciu.'<br>';
+            }
         ?>
         <br>
     </div>
