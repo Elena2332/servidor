@@ -17,12 +17,12 @@
             <input type="radio" name="numDes"/>
             <input type="radio" name="numDes"/>
             <input type="radio" name="numDes"/>
-            <button type="button" id="btnRad">Cifrado Cesar</button>
+            <button type="submit" id="btnRad">Cifrado Cesar</button>
         </div>
         <div>
             <label>Fichero de clave:</label>
             <input id="inpFich" type="file"/>
-            <button type="button" id="btnFich"></button>
+            <button type="submit" id="btnFich"></button>
         </div>
     </form>
 
