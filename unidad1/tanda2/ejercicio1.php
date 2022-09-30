@@ -5,29 +5,87 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ejercicio1</title>
+    <style>
+        p{ color:red; }
+    </style>
 </head>
 <body>
-    <form>
+    <form enctype="multipart/form-data" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
         <div>
             <label>Texto a cifrar</label>
-            <input id="inpTexto" type="text"/>
+            <!-- <input name="inpTexto" type="text"/> -->
+            <?php
+                if(isset($_POST["btnRad"]))
+                {
+                        // input texto
+                    if(strlen($_POST["inpTexto"]."")!=0)
+                        echo '<input type="text" name="inpTexto" value="'.$_POST["inpTexto"].'"/>';
+
+                        //radios
+                    
+                }
+                else
+                {
+                    if(isset($_POST["btnFich"]))
+                    {
+                        if(strlen($_POST["inpTexto"]."")!=0)
+                            echo '<input type="text" name="inpTexto" value="'.$_POST["inpTexto"].'"/>';
+                    }                        
+                    else
+                        echo '<input type="text" name="inpTexto" />';
+                }
+                    
+            ?>
         </div>
         <div>
             <label>Desplazamiento:</label>
-            <input type="radio" name="numDes"/>
-            <input type="radio" name="numDes"/>
-            <input type="radio" name="numDes"/>
-            <button type="submit" id="btnRad">Cifrado Cesar</button>
+            <input type="radio" name="numDes" value="3"/>  <label>3</label>
+            <input type="radio" name="numDes" value="5"/>  <label>5</label>
+            <input type="radio" name="numDes" value="10"/> <label>10</label>
+            <button type="submit" name="btnRad">Cifrado Cesar</button>
         </div>
         <div>
             <label>Fichero de clave:</label>
-            <input id="inpFich" type="file"/>
-            <button type="submit" id="btnFich"></button>
+            <input name="inpFich" type="file"/>
+            <button type="submit" name="btnFich">Cifrado por sustitucion</button>
         </div>
     </form>
 
     <?php
+        if(isset($_POST['btnRad']))  //cifrado cesar
+        {
+            if(empty($_POST['inpTexto']))
+                echo '<p>Introduce texto</p>';  
+            else
+            {
+                if(!isset($_POST['numDes']))  //no ha seleccionado un radio
+                    echo '<p>selecciona un radio</p>';
+                else  
+                {   //CIFRAR
+                    $str = $_POST['inpTexto'];  
+                    $desplazamiento = $_POST['numDes'];
+                    $cadena = "";
+                    for($i=0; $i<strlen($str) ;$i++)
+                        $cadena = $cadena. chr(ord(substr($str,$i,1))+$desplazamiento);
+                    $cadena = strtoupper($cadena);
+                    echo '<br><h2>Texto cifrado: '.$cadena.'</h2>';                    
+                }
+            }
+        }
+        if(isset($_POST['btnFich']))  //cifrado por sustitucion
+        {
+            if(!isset($_POST['inpFich']))   // no hay fichero
+                echo '<p>Selecciona fichero</p>';
+            else
+            {
+                if(empty($_POST['inpTexto']))  // no hay texto
+                    echo '<p>Introduce texto</p>';
+                else
+                {   //CIFRAR
 
+                }
+            }
+        }
     ?>
 </body>
 </html>
