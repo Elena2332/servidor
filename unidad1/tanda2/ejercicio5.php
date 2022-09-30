@@ -9,7 +9,15 @@
 <body>
     <form enctype="multipart/form-data" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
         <label>Cantidad:</label>
-        <input type="text" name="txtNum"/>
+        <?php
+            if(isset($_POST["btnC"]))
+            {
+                if(strlen($_POST["txtNum"]."")!=0)
+                    echo '<input type="text" name="txtNum" value="'.$_POST["txtNum"].'"/>';
+            }
+            else
+                echo '<input type="text" name="txtNum"/>';
+        ?>
         <?php
             if(!isset($_POST["btnC"]) || $_POST["radUni"]=="1")
                 echo '<input type="radio" name="radUni" value="1" checked />';
