@@ -35,7 +35,6 @@
                     else
                         echo '<input type="text" name="inpTexto" />';
                 }
-                    
             ?>
         </div>
         <div>
@@ -61,6 +60,12 @@
                                     <input type="radio" name="numDes" value="5"/>  <label>5</label>
                                     <input type="radio" name="numDes" value="10" checked/> <label>10</label>';
                         }
+                    }
+                    else  
+                    {
+                        echo'<input type="radio" name="numDes" value="3"/>  <label>3</label>
+                            <input type="radio" name="numDes" value="5"/>  <label>5</label>
+                            <input type="radio" name="numDes" value="10"/> <label>10</label>';
                     }
                 }
                 else  //primera vez que entra
