@@ -12,17 +12,16 @@
 <body>
     <form enctype="multipart/form-data" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
         <div>
-            <label>Texto a cifrar</label>
             <!-- <input name="inpTexto" type="text"/> -->
             <?php
+                echo '<label>Texto a cifrar: </label>';
                 if(isset($_POST["btnRad"]))
                 {
                         // input texto
                     if(strlen($_POST["inpTexto"]."")!=0)
                         echo '<input type="text" name="inpTexto" value="'.$_POST["inpTexto"].'"/>';
-
-                        //radios
-                    
+                    else
+                        echo '<input type="text" name="inpTexto" />';
                 }
                 else
                 {
@@ -30,6 +29,8 @@
                     {
                         if(strlen($_POST["inpTexto"]."")!=0)
                             echo '<input type="text" name="inpTexto" value="'.$_POST["inpTexto"].'"/>';
+                        else
+                            echo '<input type="text" name="inpTexto" />';
                     }                        
                     else
                         echo '<input type="text" name="inpTexto" />';
@@ -39,9 +40,36 @@
         </div>
         <div>
             <label>Desplazamiento:</label>
-            <input type="radio" name="numDes" value="3"/>  <label>3</label>
-            <input type="radio" name="numDes" value="5"/>  <label>5</label>
-            <input type="radio" name="numDes" value="10"/> <label>10</label>
+            <?php 
+                if(isset($_POST['btnRad']))
+                {
+                    if(isset($_POST['numDes']))
+                    {
+                        $seleccionado = $_POST['numDes'];
+                        if($seleccionado == '3')
+                            echo'<input type="radio" name="numDes" value="3" checked/>  <label>3</label>
+                                <input type="radio" name="numDes" value="5"/>  <label>5</label>
+                                <input type="radio" name="numDes" value="10"/> <label>10</label>';
+                        else
+                        {
+                            if($seleccionado == '5')
+                                echo'<input type="radio" name="numDes" value="3"/>  <label>3</label>
+                                    <input type="radio" name="numDes" value="5" checked/>  <label>5</label>
+                                    <input type="radio" name="numDes" value="10"/> <label>10</label>';
+                            else
+                                echo'<input type="radio" name="numDes" value="3"/>  <label>3</label>
+                                    <input type="radio" name="numDes" value="5"/>  <label>5</label>
+                                    <input type="radio" name="numDes" value="10" checked/> <label>10</label>';
+                        }
+                    }
+                }
+                else  //primera vez que entra
+                {
+                    echo'<input type="radio" name="numDes" value="3"/>  <label>3</label>
+                        <input type="radio" name="numDes" value="5"/>  <label>5</label>
+                        <input type="radio" name="numDes" value="10"/> <label>10</label>';
+                }
+            ?>
             <button type="submit" name="btnRad">Cifrado Cesar</button>
         </div>
         <div>
