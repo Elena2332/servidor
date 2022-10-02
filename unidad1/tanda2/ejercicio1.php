@@ -79,7 +79,10 @@
         </div>
         <div>
             <label>Fichero de clave:</label>
-            <input name="inpFich" type="file"/>
+            <select name="selFich">
+                <option value="./doc/cifrado1.txt">cifrado elena</option>
+                <option value="./doc/cifrado2.txt">cifrado enunciado</option>
+            </select>
             <button type="submit" name="btnFich">Cifrado por sustitucion</button>
         </div>
     </form>
@@ -101,23 +104,40 @@
                     for($i=0; $i<strlen($str) ;$i++)
                         $cadena = $cadena. chr(ord(substr($str,$i,1))+$desplazamiento);
                     $cadena = strtoupper($cadena);
-                    echo '<br><h2>Texto cifrado: '.$cadena.'</h2>';                    
+                    echo '<br><h2>Texto cifrado: '.$cadena.'</h2>';     //mostrar RESULTADO               
                 }
             }
         }
         if(isset($_POST['btnFich']))  //cifrado por sustitucion
         {
-            if(!isset($_POST['inpFich']))   // no hay fichero
-                echo '<p>Selecciona fichero</p>';
+            if(empty($_POST['inpTexto']))   // no hay texto
+                echo '<p>Introduce texto</p>';
             else
-            {
-                if(empty($_POST['inpTexto']))  // no hay texto
-                    echo '<p>Introduce texto</p>';
-                else
-                {   //CIFRAR
-
+            {   
+                //leer fichero
+                $clave;
+                $handle = fopen($_POST['selFich'], "r");
+                $clave = fgets($handle);                 
+                fclose($handle);
+                
+                //CIFRAR
+                $letras = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+                $str = strtoupper($_POST['inpTexto']); 
+                $cadena = "";
+                for($i=0; $i<strlen($str) ;$i++)  //recorre la palabra a cifrar
+                {
+                    $car = substr($str,$i,1);  //letra actual
+                    for($j=0, $seguir=true;  $j<=count($letras) && $seguir==true ;$j++)  //busca la posicion de la letra
+                    {
+                        if($car == $letras[$j])
+                        {
+                            $cadena = $cadena.substr($clave,$j,1);   //letra que corresponde de la clave
+                            $seguir = false;
+                        }
+                    }
                 }
-            }
+                echo '<br><h2>Texto cifrado: '.$cadena.'</h2>';   //mostrar RESULTADO
+            }        
         }
     ?>
 </body>
