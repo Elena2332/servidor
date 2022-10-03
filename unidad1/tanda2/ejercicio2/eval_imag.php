@@ -56,9 +56,9 @@
                 }
                 else
                 {
-                    echo '<p>Sentimos que no le haya gustado ninguna. Fastidiate :)</p>';
+                    echo '<p>Sentimos que no le haya gustado ninguna.</p>';
                 }
-                echo '<a href="selec_cantidad.php">VOLVER</a>';
+                echo '<br/><a href="selec_cantidad.php">VOLVER</a>';
             }
         ?>
     </form>

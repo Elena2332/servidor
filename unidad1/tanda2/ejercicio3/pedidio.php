@@ -20,8 +20,8 @@
             //fichero detalles
             if(isset($_FILES["btnFile"]))
             {
-                $target="doc/info-item/".$_POST['inpNom'].".txt";
-                move_uploaded_file($_FILES["btnFile"]["tmp_name"], $target);  // mueve el archivo a ''
+                $target="doc/descripciones/".$_POST['inpNom'].".txt";
+                move_uploaded_file($_FILES["btnFile"]["tmp_name"], $target);  // mueve el archivo a 'target'
             }
         }
     }
@@ -44,7 +44,7 @@
 </head>
 <body>
     <table>
-    <tr><td colspan="4" class="especial">ELIGE TU PEDIDIO</td></tr>
+        <tr><td colspan="4" class="especial">ELIGE TU PEDIDIO</td></tr>
         <?php
             $fich = fopen("doc/archivo.txt", "r");  
             while (!feof($fich)) 
@@ -54,15 +54,21 @@
                 if(count($linea)==2)
                 {
                     $precio = str_replace(",",".",$linea[1]);
-                    $nuevoTotal = $total+floatval($precio);
-                    echo '<tr><td>'.$linea[0].'</td>
+                    $nuevoTotal = $total + floatval($precio);  //calcula precio total
+                    echo '<tr>
+                            <td>'.$linea[0].'</td>
                             <td>'.$linea[1].'</td>
-                            <td><a href="?nuevoTotal='.$nuevoTotal.'">Añadir unidad</a></td></tr>';
-                    $files = scandir('./doc');
-                    for($files as $file)
+                            <td><a href="?nuevoTotal='.$nuevoTotal.'">Añadir unidad</a></td>';  // pasa el total + el precio del articulo
+                    //decripcion
+                    $files = scandir('./doc/descripciones');
+                    foreach($files as $file)
                     {
-
+                        if(explode('.',$file)[0] == $linea[0])
+                            echo '<td><a href="./doc/descripciones/'.$file.'" target="blank">descripcion</a></td>';
+                        else
+                            echo '<td></td>';
                     }
+                    echo '</tr>';
                 }
             }
             fclose($fich);   
