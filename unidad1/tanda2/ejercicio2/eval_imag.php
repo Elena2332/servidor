@@ -8,7 +8,7 @@
     <style>
         body
         {
-            diplay: flex;
+            display: flex;
         }
     </style>
 </head>

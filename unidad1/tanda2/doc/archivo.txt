@@ -1,0 +1,11 @@
+Tornillo TY200;0.15
+Arandela;0.03
+Bisagra HG209;1.34
+Llave Allen;0,6
+Elena Nito;5000
+Patri Txikita;123
+Elena;Nito;12
+Elena;Nito;12
+Elena;Nito;12
+Elena;Nito;12
+Arandela;3
