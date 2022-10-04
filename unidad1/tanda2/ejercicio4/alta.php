@@ -44,7 +44,7 @@
                     fwrite($fich, $linea); 
                     fclose($fich);
                     $txtHTML = 'El usuario <strong>'.$_POST['inpName'].'</strong> ha sido dado de alta
-                                <a href="chat.php">ENTRAR AL CHAT</a>';
+                                <a href="chat.php?nom='.$_POST['inpName'].'">ENTRAR AL CHAT</a>';
                 }
             }            
         }
