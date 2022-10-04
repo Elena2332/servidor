@@ -7,12 +7,16 @@
     <title>Login</title>
 </head>
 <body>
-    <!-- <form enctype="multipart/form-data" method="POST" action="./validacion.php"> -->
-    <form enctype="multipart/form-data" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    <form enctype="multipart/form-data" method="POST" action="./validacion.php">
         <table>
             <tr>
                 <td>Nombre usuario:</td>
-                <td><input type="text" name="inpName"/></td>
+                <?php
+                    $nom = "";
+                    if(isset($_GET['invPass']))
+                        $nom = $_GET['invPass'];
+                    echo '<td><input type="text" name="inpName" value="'.$nom.'"/></td>';
+                ?>
                 <td rowspan="2"><input type="submit" name="btnValidar" value="ENTRAR"/></td>
             </tr>
             <tr>
@@ -22,39 +26,12 @@
         </table>
     </form>
     <?php
-        if(isset($_POST['btnValidar']))
+        if(isset($_GET['minCar']))
+            echo '<p style="color:red;">Los campos deben tener minimo 3 caracteres</p>';
+        else
         {
-            if(strlen($_POST['inpName'])<3  && strlen($_POST['inpPass'])<3)
-                echo '<p style="color:red;">Los campos deben tener minimo 3 caracteres</p>';
-            else
-            {
-                $fich = fopen("doc/usuarios.txt", "r");
-                $seguir = true;
-                $existe = false;
-                while (!feof($fich) && $seguir==true) 
-                {
-                    $linea = fgets($fich); 
-                    $linea = explode(';;;',$linea);
-                    if($_POST['inpName']==$linea[0])
-                    {   
-                        $seguir = false;
-                        fclose($fich);
-                        $existe = true;
-
-                        if($_POST['inpPass']==$linea[1])  // usuario y password correctos
-                        {
-                            header('Location: chat.php');
-                            exit();
-                        }
-                        else  //contraseña erronea
-                        {
-                            echo '<p style="font-size:1.2em;">CONTRASEÑA ERRONEA para '.$_POST['inpName'].'.</p><p>Intentalo de nuevo.</p>';
-                        }
-                    }
-                }
-                if(!$existe)   //ir a alta.php
-                    header('Location: alta.php');
-            }           
+            if(isset($_GET['invPass']))
+                echo '<p style="font-size:1.2em;">CONTRASEÑA ERRONEA para '.$_GET['invPass'].'.</p><p>Intentalo de nuevo.</p>';
         }
     ?>
 </body>

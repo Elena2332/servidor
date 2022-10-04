@@ -1,7 +1,7 @@
 <?php 
     function construirHTML()
     {
-        $txtHTML = '<form enctype="multipart/form-data" method="POST" action="<?php echo $_SERVER['.'PHP_SELF'.']; ?>">
+        $txtHTML = '<form enctype="multipart/form-data" method="POST" action="'.$_SERVER['PHP_SELF'].'">
                 <table>
                     <tr>
                         <td>Nombre usuario:</td>
@@ -19,28 +19,34 @@
             </form>';
         if(isset($_POST['btnRegistrar']))
         {
-            //comprobar si ya existe
-            $existe = false;
-            $fich = fopen("doc/usuarios.txt", "r");
-            while (!feof($fich) && $seguir) 
-            {
-                $linea = fgets($fich); 
-                $linea = explode(';;;',$linea);
-                if($_POST['inpName']==$linea[0])  
-                    $existe = true;
-            }
-            fclose($fich);
-            if($existe)
-                $txtHTML = '<p style="color:red;>Lo sentimos, ya existe el usuario <strong>'.$_POST['inpName'].'</strong></p>'.$txtHTML;
+            if(strpos($_POST['inpName'], ';;;') != false || strpos($_POST['inpPass'], ';;;') != false)
+                echo '<p style="color:red;">No uses ";;;" melón</p>';
             else
             {
-                $fich = fopen("doc/usuarios.txt", "a");
-                $linea = $_POST['inpName'].';;;'.$_POST['inpPass'].PHP_EOL;  //PHP_EOL:=salto de linea  _._  usuario;;;password
-                fwrite($fich, $linea); 
+                //comprobar si ya existe
+                $existe = false;
+                $seguir = true;
+                $fich = fopen("doc/usuarios.txt", "r");
+                while (!feof($fich) && $seguir) 
+                {
+                    $linea = fgets($fich); 
+                    $linea = explode(';;;',$linea);
+                    if($_POST['inpName']==$linea[0])  
+                        $existe = true;
+                }
                 fclose($fich);
-                $txtHTML = 'El usuario <strong>'.$_POST['inpName'].'</strong> ha sido dado de alta
-                            <a href="chat.php">ENTRAR AL CHAT</a>';
-            }
+                if($existe)
+                    $txtHTML = '<p style="color:red;>Lo sentimos, ya existe el usuario <strong>'.$_POST['inpName'].'</strong></p>'.$txtHTML;
+                else
+                {
+                    $fich = fopen("doc/usuarios.txt", "a");
+                    $linea = $_POST['inpName'].';;;'.$_POST['inpPass'].PHP_EOL;  //PHP_EOL:=salto de linea  _._  usuario;;;password
+                    fwrite($fich, $linea); 
+                    fclose($fich);
+                    $txtHTML = 'El usuario <strong>'.$_POST['inpName'].'</strong> ha sido dado de alta
+                                <a href="chat.php">ENTRAR AL CHAT</a>';
+                }
+            }            
         }
         return $txtHTML;
     }    
