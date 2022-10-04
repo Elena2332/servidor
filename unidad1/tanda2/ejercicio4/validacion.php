@@ -17,7 +17,7 @@
             while (!feof($fich) && $seguir==true) 
             {
                 $linea = fgets($fich); 
-                $linea = explode(';;;',$linea);
+                $linea = explode(';SEPAR;',$linea);
                 if(trim($_POST['inpName'])==$linea[0])
                 {   
                     $seguir = false;

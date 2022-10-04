@@ -19,8 +19,8 @@
             </form>';
         if(isset($_POST['btnRegistrar']))
         {
-            if(strpos($_POST['inpName'], ';;;') != false || strpos($_POST['inpPass'], ';;;') != false)
-                echo '<p style="color:red;">No uses ";;;" melón</p>';
+            if(strpos($_POST['inpName'], ';SEPAR;') != false || strpos($_POST['inpPass'], ';SEPAR;') != false)
+                echo '<p style="color:red;">No uses ";SEPAR;" melón</p>';
             else
             {
                 //comprobar si ya existe
@@ -30,7 +30,7 @@
                 while (!feof($fich) && $seguir) 
                 {
                     $linea = fgets($fich); 
-                    $linea = explode(';;;',$linea);
+                    $linea = explode(';SEPAR;',$linea);
                     if($_POST['inpName']==$linea[0])  
                         $existe = true;
                 }
@@ -40,7 +40,7 @@
                 else
                 {
                     $fich = fopen("doc/usuarios.txt", "a");
-                    $linea = $_POST['inpName'].';;;'.$_POST['inpPass'].PHP_EOL;  //PHP_EOL:=salto de linea  _._  usuario;;;password
+                    $linea = $_POST['inpName'].';SEPAR;'.$_POST['inpPass'].PHP_EOL;  //PHP_EOL:=salto de linea  _._  usuario;SEPAR;password
                     fwrite($fich, $linea); 
                     fclose($fich);
                     $txtHTML = 'El usuario <strong>'.$_POST['inpName'].'</strong> ha sido dado de alta
