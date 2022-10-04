@@ -16,8 +16,26 @@
     }
     function filtrar($msg)
     {
-        
-        return str_ireplace($textoAReemplazar, $reemplazo, $msg);
+        $reemplazables = [];
+        $reemplazos = [];
+        //palabras ofensivas
+        $fich = fopen('./doc/palabrasOfensivas.txt','r');
+        while(!feof($fich))
+        {
+            $linea = fgets($fich);
+            $reemplazables[] = trim($linea);
+            $str = "";
+            for($i=0; $i<strlen(trim($linea)) ;$i++)
+                $str = $str.'*';
+            $reemplazos[] = $str;
+        }
+        fclose($fich);
+        //emoticonos
+        $reemplazables[] = ":)";
+        $reemplazos[] = '<img src="./img/feliz.png" width="15"/>';
+        $reemplazables[] = ":(";
+        $reemplazos[] = '<img src="./img/triste.png" width="15"/>';
+        return str_ireplace($reemplazables, $reemplazos, $msg);
     }
 ?>
 <!DOCTYPE html>

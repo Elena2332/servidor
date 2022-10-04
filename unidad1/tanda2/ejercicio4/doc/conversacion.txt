@@ -6,3 +6,9 @@ elCaesar;SEPAR;cerdo
 laPatri;SEPAR;puerco
 elenanito;SEPAR;...
 elena;SEPAR;ok
+elena;SEPAR;frances
+elena;SEPAR;melonmelon
+asd;SEPAR;hola perras
+asd;SEPAR;:)
+asd;SEPAR;:)
+asd;SEPAR;:(

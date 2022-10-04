@@ -11,3 +11,5 @@ cerdo
 frances
 hetero basico
 VOX
+perras
+perra
