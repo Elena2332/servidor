@@ -1,0 +1,19 @@
+body
+{
+    margin:20px;
+}
+form
+{
+    width: fit-content;
+    padding: 20px;
+    border: 2px solid cornflowerblue;
+    background-color: rgb(146, 178, 238);
+}
+div
+{
+    margin: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
