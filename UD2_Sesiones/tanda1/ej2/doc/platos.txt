@@ -1,0 +1,15 @@
+paella Segundo 15
+ensalada Primero 6.30
+sopa Primero 9.20
+agua Bebida 1
+helado Postre 3.60
+vino Bebida 3
+lentejas Segundo 10.80
+garbanzos Segundo 9.40
+rissoto Primero 11
+refresco Bebida 2.50
+tarta Postre 5
+macedonia Postre 4
+banderillas Primero 6.10
+torrijas Postre 5.80
+galletas Postre 3.20
