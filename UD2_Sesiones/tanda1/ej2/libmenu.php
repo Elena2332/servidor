@@ -2,7 +2,7 @@
     /// socios.txt
     function autentica($usu,$pass) // 1:=correcto __.__  0:=incorrecto
     {
-        $fich = fopen('/doc/socios.txt','r');
+        $fich = fopen('./doc/socios.txt','r');
         while (!feof($fich)) 
         {
             $linea = fgets($fich); 
@@ -19,7 +19,7 @@
 
     function dameDcto($usu)  // devuelve el decuento de usu o 0 si no encuentra
     {
-        $fich = fopen('/doc/socios.txt','r');
+        $fich = fopen('./doc/socios.txt','r');
         while (!feof($fich)) 
         {
             $linea = fgets($fich); 
@@ -38,7 +38,7 @@
     function damePlatos($tipo)  // devuelve array plato-precio
     {
         $platos = [];
-        $fich = fopen('/doc/platos.txt','r');
+        $fich = fopen('./doc/platos.txt','r');
         while (!feof($fich)) 
         {
             $linea = fgets($fich); 
@@ -52,7 +52,7 @@
 
     function damePrecio($plato)  // devuelve precio o -1 si no encuentra
     {
-        $fich = fopen('/doc/platos.txt','r');
+        $fich = fopen('./doc/platos.txt','r');
         while (!feof($fich)) 
         {
             $linea = fgets($fich); 

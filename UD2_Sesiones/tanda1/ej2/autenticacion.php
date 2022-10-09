@@ -28,6 +28,8 @@ include './libmenu.php';
     {
         if(isset($_POST['btnInvitado']))   // invitado
         {
+            session_start();
+            $_SESSION['usuario'] = ['invitado', 0];  // invitado y su descuento 0
             header('Location: pedido.php');
                 exit();
         }

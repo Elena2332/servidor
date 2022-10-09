@@ -1,5 +1,29 @@
 <?php
     session_start();
+    if(!isset($_SESSION['usuario']))
+    {
+        header('Location: entrada.php');  // tipo random que no deberia estar aqui
+        exit();
+    }
+
+    function mostrarPedido()
+    {
+        if(isset($_SESSION['platos']))
+        {
+            $txtHtml = "SU ELECCION: <br/><ul>";
+            if(isset($_SESSION['platos']['Primero']))
+                $txtHtml = $txtHtml.'<li>Primer plato: '.$_SESSION['platos']['Primero'].'</li>';
+            if(isset($_SESSION['platos']['Segundo']))
+                $txtHtml = $txtHtml.'<li>Segundo plato: '.$_SESSION['platos']['Segundo'].'</li>';
+            if(isset($_SESSION['platos']['Postre']))
+                $txtHtml = $txtHtml.'<li>Postre: '.$_SESSION['platos']['Postre'].'</li>';
+            if(isset($_SESSION['platos']['Bebida']))
+                $txtHtml = $txtHtml.'<li>Bebida: '.$_SESSION['platos']['Bebida'].'</li>';
+            return $txtHtml.'</ul>';
+        }
+        else 
+            return '';
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,9 +34,11 @@
     <title>Pedido</title>
 </head>
 <body>
-    <p><a href="">Primero</a></p>
-    <p><a href="">Segundo</a></p>
-    <p><a href="">Postre</a></p>
-    <p><a href="">Bebida</a></p>
+    <p><a href="./pedidoplato.php?tipo=Primero">Primero</a></p>
+    <p><a href="./pedidoplato.php?tipo=Segundo">Segundo</a></p>
+    <p><a href="./pedidoplato.php?tipo=Postre">Postre</a></p>
+    <p><a href="./pedidoplato.php?tipo=Bebida">Bebida</a></p>
+    <?php echo mostrarPedido() ?>
+    <button type="submit" name="btnPedir">Hacer pedido</button>
 </body>
 </html>
