@@ -18,7 +18,7 @@
         {
             $txtHtml = $txtHtml.'<tr><td><input type="checkbox" name="'.$nom.'">'.$nom.'</td>';
             $txtHtml = $txtHtml.'<td>'.$precio.'€</td>';            
-            $txtHtml = $txtHtml.'<td><select name="selCant"'.$nom.'">';
+            $txtHtml = $txtHtml.'<td><select name="selCant'.$nom.'">';
             for ($i=0; $i<=10;$i++)
                 $txtHtml = $txtHtml.'<option value='.$i.'>'.$i.'</option>';
             $txtHtml = $txtHtml.'</select></td>';
@@ -42,7 +42,7 @@
         $_SESSION['pedidos'] = ['prod1' => 0, 'prod2' => 0, 'prod3' => 0, 'prod4' => 0];
     }
 
-    function sacarErrores()
+    function mostrarErrores()
     {
         if (isset($_POST['btnAniadir']))
         {
@@ -51,34 +51,38 @@
             {
                 if(!isset($_POST[$nom]))
                     $cont++;
-                if ($_POST['selCant'.$nom] == 0)
-                    echo '<p>Debes seleccionar una cantidad del producto</p>';
+                else    
+                {
+                    if ($_POST['selCant'.$nom] == 0)
+                        return '<p>Debes seleccionar una cantidad del producto</p>';
+                }
             }
             if ($cont == count(PRODUCTOS))
-                echo '<p>Debes seleccionar algun producto</p>';
-            
+                return '<p>Debes seleccionar algun producto</p>';
         }
     }
 
     function mostrarPedido()
     {
+        $txtHtml = '';
         if (isset($_POST['btnCompra']))
         {
-            echo '<h2>Tu pedido</h2><ul>';
+            $txtHtml = '<h2>Tu pedido</h2><ul>';
             $total = 0;
             foreach($_SESSION['pedidos'] as $nom => $value)
             {
                 if ($value!=0)
                 {
-                    echo '<li>'.$nom.' - '.$value.' unidades a '.PRODUCTOS[$nom].'€</li>';
+                    $txtHtml = $txtHtml. '<li>'.$nom.' - '.$value.' unidades a '.PRODUCTOS[$nom].'€</li>';
                     $total = $total+(PRODUCTOS[$nom] * $value);
                 }
             }
 
-            echo '<li>TOTAL '.$total.' EUROS</li></ul>';
+            $txtHtml = $txtHtml. '<li>TOTAL '.$total.' EUROS</li></ul>';
             unset($_SESSION['pedidos']);
             $_SESSION['pedidos'] = ['prod1' => 0, 'prod2' => 0, 'prod3' => 0, 'prod4' => 0];
         }
+        return $txtHtml;
     }
 
 ?>
@@ -101,8 +105,8 @@
     <form enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">  
 
         <?php
-            sacarErrores();
-            mostrarPedido();
+            echo mostrarErrores();
+            echo mostrarPedido();
         ?>
         <table>
             <?php echo dibujarTabla(); ?>
