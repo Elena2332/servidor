@@ -5,7 +5,7 @@
         header('Location: entrada.php');  // tipo random que no deberia estar aqui
         exit();
     }
-
+    
     function mostrarPedido()
     {
         if(isset($_SESSION['platos']))
@@ -24,6 +24,17 @@
         else 
             return '';
     }
+    if(isset($_POST['btnPedir']))
+    {
+        if(count($_SESSION['platos'])>0)
+        {
+            header('Location: finpedido.php');
+            exit();
+        }
+        else
+            echo '<p style="color:red;">Elige al menos un plato</p>';
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,6 +50,10 @@
     <p><a href="./pedidoplato.php?tipo=Postre">Postre</a></p>
     <p><a href="./pedidoplato.php?tipo=Bebida">Bebida</a></p>
     <?php echo mostrarPedido() ?>
-    <button type="submit" name="btnPedir">Hacer pedido</button>
+    <form enctype="multipart/form-data" method="POST" action="<?php $_SERVER['PHP_SELF']?>">
+        <button style="padding:0px; border:0px;" type="submit" name="btnPedir">
+            <img src="./img/pedido.PNG" alt="Hacer Pedido"/>
+        </button>
+    </form>
 </body>
 </html>

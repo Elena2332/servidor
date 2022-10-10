@@ -7,22 +7,29 @@ include './libmenu.php';
         exit();
     }
 
+    if(isset($_POST['btnElegir']) && isset($_POST['selPlatos']))
+    {
+        $_SESSION['platos'][$_GET['tipo']] = $_POST['selPlatos'];
+        header('Location: pedido.php');
+        exit();
+    }
+
     function pintar()
     {
-        $txtHtml = "";
         $tipo = $_GET['tipo'];
         if(isset($_SESSION['platos'][$tipo]))  // ya hay un plato de ese tipo  
-            $txtHtml = $txtHtml.'<p>Va a cambiar su eleccion'.$_SESSION['platos'][$tipo].'por:</p><select name="selPlatos">';
+            echo '<label>Va a cambiar su eleccion '.$_SESSION['platos'][$tipo].' por:</label><br/>';
         else  
-            $txtHtml = $txtHtml.'<p>Elija '.$tipo.'</p><select name="selPlatos">';
-        $txtHtml = $txtHtml.'</select>';
+            echo '<label>Elija '.$tipo.'</label><br/>';
+
         //listar platos
+        echo '<select name="selPlatos">';
         $platosTipo = damePlatos($tipo);
-        var_dump($platosTipo);
-        foreach($platosTipo as $plato)
-        {
-            var_dump($plato);
-        }
+        foreach($platosTipo as $plato => $precio)  //recorrer el map
+            echo '<option value="'.$plato.'">'.$plato.' - '.$precio.'</option>';
+
+        //btnElegir
+        echo '</select><input type="submit" name="btnElegir" value="Elegir '.$tipo.'"/>';
     }
 
 
@@ -37,6 +44,8 @@ include './libmenu.php';
     <title>Plato</title>
 </head>
 <body>
-    <?php  pintar(); ?>
+    <form enctype="multipart/form-data" method="POST" action="<?php $_SERVER['PHP_SELF']?>">
+        <?php pintar(); ?>
+    </form>
 </body>
 </html>
