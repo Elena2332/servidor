@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `categorias`;
 CREATE TABLE IF NOT EXISTS `categorias` (
-  `id` int NOT NULL,
+  `id` int NOT NULL auto_increment,
   `categoria` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_categoria` (`id`)
@@ -53,7 +53,7 @@ INSERT INTO `categorias` (`id`, `categoria`) VALUES
 
 DROP TABLE IF EXISTS `imagenes`;
 CREATE TABLE IF NOT EXISTS `imagenes` (
-  `id` int NOT NULL,
+  `id` int NOT NULL auto_increment,
   `id_item` int NOT NULL,
   `imagen` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
@@ -76,7 +76,7 @@ INSERT INTO `imagenes` (`id`, `id_item`, `imagen`) VALUES
 
 DROP TABLE IF EXISTS `items`;
 CREATE TABLE IF NOT EXISTS `items` (
-  `id` int NOT NULL,
+  `id` int NOT NULL auto_increment,
   `id_cat` int NOT NULL,
   `id_user` int NOT NULL,
   `nombre` varchar(50) NOT NULL,
@@ -108,7 +108,7 @@ INSERT INTO `items` (`id`, `id_cat`, `id_user`, `nombre`, `preciopartida`, `desc
 
 DROP TABLE IF EXISTS `pujas`;
 CREATE TABLE IF NOT EXISTS `pujas` (
-  `id` int NOT NULL,
+  `id` int NOT NULL auto_increment,
   `id_item` int NOT NULL,
   `id_user` int NOT NULL,
   `cantidad` float NOT NULL,
@@ -134,7 +134,7 @@ INSERT INTO `pujas` (`id`, `id_item`, `id_user`, `cantidad`, `fecha`) VALUES
 
 DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE IF NOT EXISTS `usuarios` (
-  `id` int NOT NULL,
+  `id` int NOT NULL auto_increment,
   `username` varchar(40) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `password` varchar(40) NOT NULL,

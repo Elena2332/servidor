@@ -89,7 +89,7 @@
 
     //Llamamos al metodo de crear Tabla Alimento si viene del boton
     if(isset($_POST['consultarAlimenetosBaratos'])){
-        consultarAlimenetosBaratos($con, DB_TABLA_ALIMENTO);
+        fncConsultaAlimentosBaratos($con, DB_TABLA_ALIMENTO);
     }
 
     //Llamamos al metodo de crear Tabla Alimento si viene del boton
