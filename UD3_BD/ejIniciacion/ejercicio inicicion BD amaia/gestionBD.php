@@ -48,24 +48,35 @@ function fncActualizarCampoFecha($conn,$nobreTabla){
 
 }
 // CONSULTA DE ALIMENTOS BARATOS
-// -	Submit  Para visualizar una tabla html con los alimentos de precio menor al precio medio: Usando mysql_fetch_assoc
+// -	Submit  Para visualizar una tabla html con los 
+// alimentos de precio menor al precio medio: Usando mysql_fetch_assoc
 function fncConsultaAlimentosBaratos($conn,$nobreTabla){
+
+    $sql = "SELECT nombre, precio, tipo, fecha FROM $nobreTabla
+    WHERE precio < (select AVG(precio) from $nobreTabla)";
+
+    $resultado= mysqli_query($conn,$sql);
+    if(mysqli_errno($conn)) {
+        die(mysqli_error($conn));
+    }else{
+        return $resultado;
+    }; 
+
 
 }
 // CONSULTA DE ALIMENTOS POR TIPO
 // -	3 radios (primero, segundo, postre) + submit  Para visualizar una lista html con los alimentos del tipo seleccionado: Usando mysql_fetch_array
 function fncConsultaAlimentosPorTipo($conn,$nobreTabla,$tipo){
-    $sql = "select nombre,precio,tipo,fecha from ".$nobreTabla." where tipo=".$tipo;
-    $resultado = mysqli_query($conn,$sql);
-    if(mysqli_errno($conn))
-        die(mysqli_errno($conn));
-    else
-    {
-        if($resultado == false)
-            return array();
-        else
-            return $resultado;
-    }
+
+    $sql = "SELECT nombre, precio, tipo, fecha FROM $nobreTabla 
+    WHERE tipo='$tipo'";
+
+    $resultado= mysqli_query($conn,$sql);
+    if(mysqli_errno($conn)) {
+        die(mysqli_error($conn));
+    }else{
+        return $resultado;
+    }; 
 }
 
 //Mostrar tabla con datos de la tabla de alimentos

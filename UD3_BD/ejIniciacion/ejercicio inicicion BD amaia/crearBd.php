@@ -69,6 +69,8 @@
     //Llamamos al metodo de crear Tabla Alimento si viene del boton
     if(isset($_POST['crearTablaAlimento'])){
 
+        $tabla='ALIMENTOS';
+
         // Creamos la tabla Alimentos
         $queryCreateTable =  "CREATE TABLE $tabla ( id INT NOT NULL AUTO_INCREMENT,
         nombre VARCHAR(100) NULL,
@@ -87,7 +89,7 @@
 
     //Llamamos al metodo de crear Tabla Alimento si viene del boton
     if(isset($_POST['consultarAlimenetosBaratos'])){
-        fncConsultaAlimentosBaratos($con, DB_TABLA_ALIMENTO);
+        consultarAlimenetosBaratos($con, DB_TABLA_ALIMENTO);
     }
 
     //Llamamos al metodo de crear Tabla Alimento si viene del boton
@@ -141,7 +143,7 @@
         </table>
         <?php
             $resultado=fncMostrarDatosTabla($con, DB_TABLA_ALIMENTO);
-            if (isset($resultado) && $resultado!=false){ 
+            if (isset($resultado)){ 
         ?>
             <h3> Datos de tabla de Alimentos</h3>
             <table>
@@ -171,9 +173,31 @@
         <h3> Consultar alimentos Baratos</h3>
         <table>
             <tr>
-                <td><input type="submit" name="consultarAlimenetosPorTipo" value="Consultar alimentos Por Tipo"></td>
+                <td><input type="submit" name="consultarAlimentosBaratos" value="Consultar alimentos Baratos"></td>
             </tr>
         </table>
+        <?php
+            if(isset($_POST['consultarAlimentosBaratos'])){
+                
+                $resultado=fncConsultaAlimentosBaratos($con, DB_TABLA_ALIMENTO);
+                if (isset($resultado)){ 
+        ?>
+                <h3> Datos de tabla de Alimentos Baratos</h3>
+                <table>
+                    <tr><td>Nombre</td><td>Precio</td><td>Tipo</td><td>Fecha</td></tr>
+                <?php
+
+                    while($fila = mysqli_fetch_assoc($resultado)){ 
+                        echo "<tr><td>".$fila['nombre']."</td><td>".$fila['precio']."</td><td>".$fila['tipo']
+                        ."</td><td>".$fila['fecha']."</td></tr>";
+                    }      
+                ?>
+                </table>
+                <?php }
+                
+                }?>
+        
+
         <!--Tabla a mostrar cuando se pulsa el boton consultar alimentos por tipo -->
         <h3> Consultar alimentos por tipo</h3>
         <table>
@@ -182,7 +206,7 @@
             </tr>
             <tr>
                 <td>
-                    <input type="radio" name="consultaTipoAlimento" value="Primero">Primero</input>
+                    <input type="radio" name="consultaTipoAlimento" value="Primero" selected>Primero</input>
                     <input type="radio" name="consultaTipoAlimento" value="Segundo">Segundo</input>
                     <input type="radio" name="consultaTipoAlimento" value="Postre">Postre</input>
                 </td>
@@ -191,6 +215,26 @@
                 <td><input type="submit" name="consultarAlimenetosPorTipo" value="Consultar alimentos Por Tipo"></td>
             </tr>
         </table>
+        <?php
+            if(isset($_POST['consultaTipoAlimento'])){
+                
+                $resultado=fncConsultaAlimentosPorTipo($con, DB_TABLA_ALIMENTO, $_POST['consultaTipoAlimento']);
+                if (isset($resultado)){ 
+        ?>
+                <h3> Datos de tabla de Alimentos</h3>
+                <table>
+                    <tr><td>Nombre</td><td>Precio</td><td>Tipo</td><td>Fecha</td></tr>
+                <?php
+
+                    while($fila = mysqli_fetch_assoc($resultado)){ 
+                        echo "<tr><td>".$fila['nombre']."</td><td>".$fila['precio']."</td><td>".$fila['tipo']
+                        ."</td><td>".$fila['fecha']."</td></tr>";
+                    }      
+                ?>
+                </table>
+                <?php }
+                
+                }?>
     </form>
 </body>
 </html>
