@@ -1,0 +1,8 @@
+tr{
+    margin:10em;
+}
+
+.error{
+    font-style: italic;
+    color:red;
+}
