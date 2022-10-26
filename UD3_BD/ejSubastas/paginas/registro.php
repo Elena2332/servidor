@@ -5,10 +5,25 @@
 
     if(isset($_POST['btnRegistrar'])) 
     {
+        // insertar usuario
         if(!existeUsuario($_POST['inpUser']))
-        {
+            insertUsuario($_POST['inpUser'],$_POST['inpNom'],$_POST['inpPass'],$_POST['inpEmail'],crearCadenaRandom());
+        
+        // mandar mail
+        $urlCadRandom=urlencode($cadRandom);
+        $urlEmail=urlencode($email);            
+        $enlace="http://127.0.0.1/ejerphp_subastas/pruebaregistro.php?email=$urlEmail&cadverif=$urlCadRandom";            
 
-        }
+        $mens=<<<MAIL
+                Hola $usuario. Haz clic en el siguiente enlace para registrarte:
+                $enlace
+                Gracias
+        MAIL;
+
+        if (mail($email,"Registro en 127.0.0.1", $mens, "From:dwes.ciudadjardin@gmail.com"))
+                echo "Mensaje enviado";
+        else
+            echo "No se pudo enviar mensaje";  
     }
 
 ?>
