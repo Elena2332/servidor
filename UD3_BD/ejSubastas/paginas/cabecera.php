@@ -1,3 +1,5 @@
+<?php //session_start(); ?>
+
 <div id="header">
     <h1><?php echo TITULO; ?></h1>
 </div>
