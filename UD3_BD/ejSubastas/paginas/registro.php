@@ -1,29 +1,19 @@
 <?php
     // REGISTRAR 
     include 'config.php';
-    $con = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
 
     if(isset($_POST['btnRegistrar'])) 
     {
         // insertar usuario
         if(!existeUsuario($_POST['inpUser']))
-            insertUsuario($_POST['inpUser'],$_POST['inpNom'],$_POST['inpPass'],$_POST['inpEmail'],crearCadenaRandom());
+        {
+            $cad = crearCadenaRandom();
+            insertUsuario($_POST['inpUser'],$_POST['inpNom'],$_POST['inpPass'],$_POST['inpEmail'],$cad);
         
-        // mandar mail
-        $urlCadRandom=urlencode($cadRandom);
-        $urlEmail=urlencode($email);            
-        $enlace="http://127.0.0.1/ejerphp_subastas/pruebaregistro.php?email=$urlEmail&cadverif=$urlCadRandom";            
-
-        $mens=<<<MAIL
-                Hola $usuario. Haz clic en el siguiente enlace para registrarte:
-                $enlace
-                Gracias
-        MAIL;
-
-        if (mail($email,"Registro en 127.0.0.1", $mens, "From:dwes.ciudadjardin@gmail.com"))
-                echo "Mensaje enviado";
+            mandarMail($_POST['inpEmail'],$cad);
+        }  
         else
-            echo "No se pudo enviar mensaje";  
+            echo '<p style="color:red;">El usuario $_POST['inpUser'] ya existe</p>';    
     }
 
 ?>
@@ -55,11 +45,11 @@
                         </tr>
                         <tr> 
                             <td> Password</td> 
-                            <td><input type="text" name="inpPass"/> </td> 
+                            <td><input type="password" name="inpPass"/> </td> 
                         </tr>
                         <tr> 
                             <td> Password (de nuevo)</td>
-                            <td><input type="text" name="inpPassCon"/> </td> 
+                            <td><input type="password" name="inpPassCon"/> </td> 
                         </tr>
                         <tr> 
                             <td> Email</td>

@@ -65,10 +65,19 @@
             return '<img src="'.RUTA_IMG.$imgs[0].'" alt="'.$imgs[0].'" width="170"/>';
     }
 
+    function obtenerUsuario()  // return id,username,nombre,email del usuario 
+    {
+        $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
+        $sql = "select id,username,nombre,email from usuarios where username='$usu';";
+        $res = mysqli_fetch_assoc(mysqli_query($conn,$sql));
+        mysqli_close($conn);
+        return $res;
+    }
+
     function existeUsuario($usu)  // return true si existe el usuario
     {
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
-        $sql = "select count(id) from usuarios where username like '%$usu%';";
+        $sql = "select count(id) from usuarios where username='$usu';";
         $res = mysqli_fetch_row(mysqli_query($conn,$sql));
         mysqli_close($conn);
         return $res[0];
@@ -81,15 +90,59 @@
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
         $sql = "insert into usuarios (username, nombre, password, email, cadenaverificacion, activo, false) 
             values ($usu,$nom,$pass,$email,$cadena, 0,0) "; 
-        $res = mysqli_query($conn,$sql);
-        return $res;
+        $res = mysqli_query($conn,$sql);        
         mysqli_close($conn);
+
+        return $res;
     }
 
 
 ///// alters
+    function login($usu, $pass)
+    {
+        $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
+        //comprobar usuario y contrasena 
+        $sql = "select id from usuarios where username='$usu' and password='$pass';";
+        $res = mysqli_query($conn,$sql);
+        
+        if(($res -> num_rows) > 0)  //si ha debuelto filas  __.__  [$res -> num_rows] = [mysqli_num_rows($res)]
+        {
+            // comprobar si esta activo
+            $sql = "select activo from usuarios where username='$usu';";
+            $res = mysqli_query($conn,$sql);
+            if($us = mysqly_fetch_array($res))  
+            {
+                if($us[0] == 0) // usuario inactivo
+                {
+                    mysqli_close($conn);
+                    return 2; 
+                }
+                else
+                {
+                    //logear usuario
+                    $sql = "UPDATE usuarios set false=1 where nombre='$user' and pass='$pass'";
+                    $res = mysqli_query($con,$sql);
+                    mysqli_close($conn);
+                    if($res) // log actualizado
+                        return 0; // usuario logeado (todo bien)
+                    else
+                        return 3; //error al logear
+                }
+            }
+        }
+        else
+        {
+            mysqli_close($conn);
+            return 1; // usuario incorrecto
+        }
+    }
 
-
+    function logout($id)
+    {
+        $sql = "UPDATE usuarios set false=0 where id='$id'";
+        $res = mysqli_query($con,$sql); 
+        mysqli_close($conn);
+    }
 
 
 ///// deletes
@@ -107,6 +160,25 @@ function crearCadenaRandom()
     return $randomstring;
 }
 
+function mandarMail($email,$cadena)
+{
+    // mandar mail
+    $urlCadRandom=urlencode($cadena);
+    $urlEmail=urlencode($email);            
+    $enlace="http://127.0.0.1/ejerphp_subastas/pruebaregistro.php?email=$urlEmail&cadverif=$urlCadRandom";            
+
+    $mens=<<<MAIL
+            Hola $usuario. Haz clic en el siguiente enlace para registrarte:
+            $enlace
+            Gracias
+    MAIL;
+
+    if (mail($email,"Registro en 127.0.0.1", $mens, "From:dwes.ciudadjardin@gmail.com"))  //dwes.ciudadjardin@gmail.com
+        echo "<p>Mensaje enviado</p>";
+    else
+        echo '<p style="color:red;">No se pudo enviar mensaje</p>';  
+}
+
 if (isset($_GET['cadverif']))
 {
     //Viene del enlace del email
@@ -118,31 +190,5 @@ if (isset($_GET['cadverif']))
     //Si hay una tupla en la BD con ese email y esa cadena aleatorio, activar ese usuario
 }
 
-
-if (isset($_POST['registrarse']))
-{
-    $usuario="juan";
-    $passwd="1234";
-    $email="nereags@hotmail.com";
-    $cadRandom=crearCadenaRandom();   //En la BD se guarda con addslashes
-    
-    //1. Se inserta una tupla en la BD con ese usuario, desactivado, y con la cadena random           
-    
-    //2. Se le manda un email para q se pueda activar
-    $urlCadRandom=urlencode($cadRandom);
-    $urlEmail=urlencode($email);            
-    $enlace="http://127.0.0.1/ejerphp_subastas/pruebaregistro.php?email=$urlEmail&cadverif=$urlCadRandom";            
-
-    $mens=<<<MAIL
-            Hola $usuario. Haz clic en el siguiente enlace para registrarte:
-            $enlace
-            Gracias
-MAIL;
-
-    if (mail($email,"Registro en 127.0.0.1", $mens, "From:dwes.ciudadjardin@gmail.com"))
-            echo "Mensaje enviado";
-     else
-        echo "No se pudo enviar mensaje";           
-}
         
 ?>
