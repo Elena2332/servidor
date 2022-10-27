@@ -1,7 +1,9 @@
 <?php
     // PAGINA PRINCIPAL
     include './paginas/config.php';
-
+    session_start();
+    if(isset($_SESSION['id']))
+        $_SESSION['ultimaPag'] = '../index.php';
 ?>
 <html>
     <head>

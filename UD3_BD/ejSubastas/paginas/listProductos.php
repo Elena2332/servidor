@@ -7,14 +7,14 @@
         $id_cat = NULL;
 
     echo '<table><tr> <th>IMAGEN</th> <th>ITEM</th> <th>PUJAS</th> <th>PRECIO</th> <th>PUJAS HASTA</th> </tr>';
-    $items = obtenerItem($id_cat);
+    $items = obtenerItemCat($id_cat);
     while($item = mysqli_fetch_assoc($items))
     { 
         $id = $item['id'];
         echo "<tr>
-            <td>".obtenerImagen($id)."</td>
+            <td>".obtenerPrimImagen($id)."</td>
             <td><a href='./paginas/itemdetalles.php?id=$id'>".$item['nombre']."</a></td>
-            <td>".pujasPorItem($id)."</td>";
+            <td>".pujasPorItemNum($id)."</td>";
             $pujaMax = pujaMayor($id);
             if(is_null($pujaMax))
                echo "<td>".$item['preciopartida'].MONEDA."</td>";

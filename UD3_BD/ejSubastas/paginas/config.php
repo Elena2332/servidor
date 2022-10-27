@@ -14,7 +14,16 @@
     
 
 //// obtener datos
-    function obtenerItem($id_cat)
+    function obtenerItemId($id)
+    {
+        $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
+        $sql = "select * from items where id=$id";
+        $item = mysqli_fetch_assoc(mysqli_query($conn,$sql));
+        mysqli_close($conn);
+        return $item;   
+    }
+
+    function obtenerItemCat($id_cat)
     {
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
         $sql = "select * from items"; 
@@ -34,7 +43,12 @@
         return $catresult;
     }
 
-    function pujasPorItem($idItem)
+    function pujasPorItemDatos()  // return array con nom_usuario y catidad_dinero
+    {
+
+    }
+
+    function pujasPorItemNum($idItem)
     {
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
         $sql = "select count(id) from pujas where id_item=$idItem";
@@ -52,17 +66,44 @@
         return $max[0];
     }
 
-    function obtenerImagen($idItem)
+    function obtenerPrimImagen($idItem)
     {
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
         $sql = "select imagen from imagenes where id_item=$idItem";
         $res = mysqli_query($conn,$sql);
-        $imgs = mysqli_fetch_array($res);
-        mysqli_close($conn);
-        if(empty($imgs[0]))
-            return 'NO IMAGEN';
-        else
+        if($res -> num_rows() > 0)  // hay imagenes
+        {
+            $imgs = mysqli_fetch_array($res);
+            mysqli_close($conn);
             return '<img src="'.RUTA_IMG.$imgs[0].'" alt="'.$imgs[0].'" width="170"/>';
+        }
+        else
+        {
+            mysqli_close($conn);
+            return 'NO IMAGEN';
+        }
+    }
+    
+    function obtenerImagenes($idItem)
+    {
+        $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
+        $sql = "select imagen from imagenes where id_item=$idItem";
+        $res = mysqli_query($conn,$sql);
+        if($res -> num_rows() > 0)  // hay imagenes
+        {
+            $imagenes = '';
+            while($img = mysqli_fetch_assoc($res))
+            {
+                $imagenes = $imagenes.'<img src="'.RUTA_IMG.$imgs['imagen'].'" alt="'.$imgs['imagen'].'" width="170"/>';
+            }
+            mysqli_close($conn);
+            return $imagenes;
+        }
+        else
+        {
+            mysqli_close($conn);
+            return 'NO IMAGEN';
+        }
     }
 
     function obtenerUsuario()  // return id,username,nombre,email del usuario 

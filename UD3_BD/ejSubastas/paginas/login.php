@@ -4,7 +4,7 @@
 
     if(isset($_POST['btnLogin'])) 
     {
-        if(isset($_SESSION['usuario']))
+        if(isset($_SESSION['id']))
             echo '<p style="color:oranje; font-size:2em;"> No podras hacer login hasta hacer logout. </p>';
         else
         {
@@ -14,8 +14,13 @@
             {
                 case 0:
                     session_start();
-                    $_SESSION['usuario'] = obtenerUsuario($_POST['inpUser']);
+                    $user = obtenerUsuario($_POST['inpUser'])
+                    $_SESSION['id'] = $user['id'];
+                    $_SESSION['usuario'] = $user['username'];
+                    $_SESSION['nombre'] = $user['nombre'];
+                    $_SESSION['email'] = $user['email'];
                     header('Location: ../index.php');
+                    exit();
                     break;
                 case 1:
                     echo '<p style="color:red;">El usuario o contraseña incorrecto. Prueba de nuevo</p>';  
