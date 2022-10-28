@@ -43,16 +43,14 @@
         <link rel="stylesheet" type="text/css" href="./estilos/estilo.css">
     </head>
     <body>
-        <?php require_once("cabecera.php") ?>
+        <?php require_once("./cabecera.php") ?>
 
         <div id="container">
             <div id="bar">
-                <?php require_once("bar.php") ?>
+                <?php require_once("./bar.php") ?>
             </div>
-        </div>
-            
             <div id="main">
-                <p>Para registrarse en <em>El mundo ajo la mesa</em>, rellena el siguiente formulario.</p>
+                <p>Para registrarse en <em>El mundo bajo la mesa</em>, rellena el siguiente formulario.</p>
                 <form enctype="multipart/form-data" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                     <table>
                         <tr> 
@@ -61,7 +59,7 @@
                         </tr>
                         <tr> 
                             <td> Password </td>
-                         <td><input type="password" name="inpPass"/> </td> 
+                            <td><input type="password" name="inpPass"/> </td> 
                         </tr>
                         <tr>
                             <td></td> 
@@ -71,6 +69,5 @@
                 </form>
                 <p><a href="registro.php">No tiene cuenta? <strong>Registrate</strong></a></p>
             </div>
-        </div>
     </body>
 </html>

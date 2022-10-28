@@ -18,7 +18,10 @@
     
     if(isset($_POST['btnPuja']))  // pujar
     {
-        insertPuja($idUser, $idSeleccionado, $_POST['inpPuja']);
+        $puja = $_POST['inpPuja'];
+        if(!empty($puja)  &&  floatval($puja) <= pujaMayor($idSeleccionado))
+            insertPuja($idUser, $idSeleccionado, $puja);
+        header('Location: '.$_SESSION['ultimaPag']);  // actualizar historial
     }
 
 
@@ -70,45 +73,49 @@
     <title><?php echo TITULO; ?></title>
 </head>
 <body>
-    
-    <div>
-        <h2><?php echo $item['nombre']; ?></h2>
-        <p>
-            <?php 
-                echo 'Numero de pujas:'.pujasPorItemNum($idSeleccionado);
-                $pujaMax = pujaMayor($idSeleccionado);
-                if(is_null($pujaMax))
-                    echo ' - Precio actual:'.$item['preciopartida'].MONEDA;
-                else
-                    echo ' - Precio actual:'.$pujaMax.MONEDA;
-                echo ' - Fecha fin para pujar:'.$item['fechafin'];
-            ?>
-        </p>
-        <?php
-            $res = obtenerImagenes($idSeleccionado); 
-            if(mysqli_num_rows($res) > 0)  // hay imagenes
-            {
-                $imagenes = '';
-                while($img = mysqli_fetch_assoc($res))
-                    $imagenes = $imagenes.'<img src="./img/'.$img['imagen'].'" alt="'.$img['imagen'].'" width="170"/>';
-                echo $imagenes;
-            }
-        ?> 
-        <p> <?php echo $item['descripcion'] ?> </p>
-    </div>
+<?php require_once("./cabecera.php") ?>
 
-    <div>
-        <h2>Puja por este item</h2>
-        <?php
-            if(!isset($_SESSION['id']))
-                echo 'Para pujar, debes autenticarte <a href="login.php"><strong>aqui</strong></a>';
-            else
-            {
-                echo 'Añade tu puja en el cuadro inferior:';
-                echo dibujarTabla();
-            }
-            echo dibujarHistorial();
-        ?>
+    <div id="container">
+        <div id="bar">
+            <?php require_once("./bar.php") ?>
+        </div>
+        <div id="main">
+            <h2><?php echo $item['nombre']; ?></h2>
+            <p>
+                <?php 
+                    echo 'Numero de pujas:'.pujasPorItemNum($idSeleccionado);
+                    $pujaMax = pujaMayor($idSeleccionado);
+                    if(is_null($pujaMax))
+                        echo ' - Precio actual:'.$item['preciopartida'].MONEDA;
+                    else
+                        echo ' - Precio actual:'.$pujaMax.MONEDA;
+                    echo ' - Fecha fin para pujar:'.$item['fechafin'];
+                ?>
+            </p>
+            <?php
+                $res = obtenerImagenes($idSeleccionado); 
+                if(mysqli_num_rows($res) > 0)  // hay imagenes
+                {
+                    $imagenes = '';
+                    while($img = mysqli_fetch_assoc($res))
+                        $imagenes = $imagenes.'<img src="./img/'.$img['imagen'].'" alt="'.$img['imagen'].'" width="170"/>';
+                    echo $imagenes;
+                }
+            ?> 
+            <p> <?php echo $item['descripcion'] ?> </p>
+            
+            <h2>Puja por este item</h2>
+            <?php
+                if(!isset($_SESSION['id']))
+                    echo 'Para pujar, debes autenticarte <a href="login.php"><strong>aqui</strong></a>';
+                else
+                {
+                    echo 'Añade tu puja en el cuadro inferior:';
+                    echo dibujarTabla();
+                }
+                echo dibujarHistorial();
+            ?>
+        </div>
     </div>
 </body>
 </html>

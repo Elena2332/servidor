@@ -158,9 +158,15 @@
         return $res;
     }
 
-    function insertPuja($idUser, $idSeleccionado, $cant)
+    function insertPuja($idUser, $idItem, $cant)
     {
+        $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
+        $sql = "insert into pujas (id_item, id_user, cantidad, fecha) 
+            values ('$idItem','$idUser','$cant',sysdate()) ";  
+        $res = mysqli_query($conn,$sql);        
+        mysqli_close($conn);
 
+        return $res;
     }
 
 ///// alters
