@@ -43,9 +43,13 @@
         return $catresult;
     }
 
-    function pujasPorItemDatos()  // return array con nom_usuario y catidad_dinero
+    function pujasPorItemDatos($idItem)  // return array con nom_usuario y catidad_dinero
     {
-
+        $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
+        $sql = "select username,cantidad from pujas,usuarios where id_item=$idItem and id_user=usuarios.id";
+        $items = mysqli_query($conn,$sql);
+        mysqli_close($conn);
+        return $items;
     }
 
     function pujasPorItemNum($idItem)
@@ -64,6 +68,15 @@
         $max = mysqli_fetch_row(mysqli_query($conn,$sql));
         mysqli_close($conn);
         return $max[0];
+    }
+
+    function pujasDia($idUsu,$idItem)
+    {
+        $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
+        $sql = "select count(id) from pujas where id_item=$idItem and id_user=$idUsu and fecha=sysdate()";
+        $count = mysqli_fetch_row(mysqli_query($conn,$sql));
+        mysqli_close($conn);
+        return $count[0];
     }
 
     function obtenerPrimImagen($idItem)
@@ -89,21 +102,8 @@
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
         $sql = "select imagen from imagenes where id_item=$idItem";
         $res = mysqli_query($conn,$sql);
-        if(mysqli_num_rows($res) > 0)  // hay imagenes
-        {
-            $imagenes = '';
-            while($img = mysqli_fetch_assoc($res))
-            {
-                $imagenes = $imagenes.'<img src="'.RUTA_IMG.$img['imagen'].'" alt="'.$img['imagen'].'" width="170"/>';
-            }
-            mysqli_close($conn);
-            return $imagenes;
-        }
-        else
-        {
-            mysqli_close($conn);
-            return 'NO IMAGEN';
-        }
+        mysqli_close($conn);
+        return $res;
     }
 
     function obtenerUsuario($usu)  // return id,username,nombre,email del usuario 

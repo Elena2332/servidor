@@ -1,6 +1,7 @@
 <?php
     session_start();
+    $pag = $_SESSION['ultimaPag'];
     session_destroy();
-    header('Location: ../index.php');
+    header('Location: '.$pag);
     exit();
 ?>

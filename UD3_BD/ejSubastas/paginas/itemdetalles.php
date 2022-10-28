@@ -1,5 +1,6 @@
 <?php 
     //DETALLES PUJAS DEL ITEM
+    include './config.php';
     session_start();
     $idSeleccionado = -1;
     if(!isset($_GET['id']))
@@ -14,32 +15,42 @@
             $_SESSION['ultimaPag'] = 'itemdetalles.php?id='.$idSeleccionado;
     }
 
-    $item = obtenerItemId($id);
+    $item = obtenerItemId($idSeleccionado);
     
     function dibujarTabla()
     {
-        $txtHTML = '<table><tr> <td><input type="number" name="inpPuja"/></td> <td><input type="submit" name="btnPujar"/>';
+        global $idSeleccionado;
+        $txtHTML = '<form  enctype="multipart/form-data" method="POST" action="'.$_SERVER['PHP_SELF'].'"';
+        $txtHTML = $txtHTML.'<table><tr> <td><input type="number" name="inpPuja"/></td> <td><input type="submit" name="btnPujar"/>';
         if(!isset($_POST['btnPuja']))
             $txtHTML = $txtHTML.'</td>';
         else
         {
-            if(pujasDia() >= 3)
+            if(pujasDia($_SESSION['id'],$idSeleccionado) >= 3)
                 $txtHTML = $txtHTML.'<p style="color:red;"> Limite de 3 pujas por dia </p></td>';
             else
             {
                 $puja = $_POST['inpPuja'];
-                if(!empty($puja)(float)$puja <= pujaMayor())
+                if(!empty($puja) && floatval($puja) <= pujaMayor($idSeleccionado))
                     $txtHTML = $txtHTML.'<p style="color:red;"> Puja muy baja </p></td>';
             }
         }
-        $txtHTML = $txtHTML.'</tr></table>';
+        $txtHTML = $txtHTML.'</tr></table></form>';
         return $txtHTML;
     }
 
     function dibujarHistorial()
     {
+        global $idSeleccionado, $item;
         $txtHTML = '<h2>Historial de la puja</h2> <ul>';
-        $pujas = pujasPorItemDatos();
+        $pujas = pujasPorItemDatos($idSeleccionado);
+        while($puja = mysqli_fetch_assoc($pujas));
+        {
+            if($puja != null)
+                $txtHTML = $txtHTML.'<li>'.$puja[0].' - '.$puja[1].MONEDA.'</li>';
+            else
+                $txtHTML = $txtHTML.'<li>Precio partida - '.$item['preciopartida'].MONEDA.'</li>';
+        }
         $txtHTML = $txtHTML.'</ul>';
         return $txtHTML;
     }
@@ -57,7 +68,8 @@
         <h2><?php echo $item['nombre']; ?></h2>
         <p>
             <?php 
-                echo 'Numero de pujas:'.pujasPorItemNum($id);
+                echo 'Numero de pujas:'.pujasPorItemNum($idSeleccionado);
+                $pujaMax = pujaMayor($idSeleccionado);
                 if(is_null($pujaMax))
                     echo ' - Precio actual:'.$item['preciopartida'].MONEDA;
                 else
@@ -65,7 +77,16 @@
                 echo ' - Fecha fin para pujar:'.$item['fechafin'];
             ?>
         </p>
-        <?php echo obtenerImagenes(); ?> 
+        <?php
+            $res = obtenerImagenes($idSeleccionado); 
+            if(mysqli_num_rows($res) > 0)  // hay imagenes
+            {
+                $imagenes = '';
+                while($img = mysqli_fetch_assoc($res))
+                    $imagenes = $imagenes.'<img src="../img/'.$img['imagen'].'" alt="'.$img['imagen'].'" width="170"/>';
+                echo $imagenes;
+            }
+        ?> 
         <p> <?php echo $item['descripcion'] ?> </p>
     </div>
 
@@ -78,8 +99,8 @@
             {
                 echo 'Añade tu puja en el cuadro inferior:';
                 echo dibujarTabla();
-                echo dibujarHistorial();
             }
+            echo dibujarHistorial();
         ?>
     </div>
 </body>

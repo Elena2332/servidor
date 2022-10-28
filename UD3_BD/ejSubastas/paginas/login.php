@@ -5,7 +5,6 @@
     
     if(isset($_POST['btnLogin'])) 
     {
-        echo 'aaaaaaaaaaaaaa';
         if(isset($_SESSION['id']))
             echo '<p style="color:oranje; font-size:2em;"> No podras hacer login hasta hacer logout. </p>';
         else
@@ -21,7 +20,9 @@
                     $_SESSION['usuario'] = $user['username'];
                     $_SESSION['nombre'] = $user['nombre'];
                     $_SESSION['email'] = $user['email'];
-                    header('Location: ../index.php');
+                    
+                    $pag = $_SESSION['ultimaPag'];
+                    header('Location: '.$pag);
                     exit();
                     break;
                 case 1:
