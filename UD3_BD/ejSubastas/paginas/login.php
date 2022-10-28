@@ -1,9 +1,11 @@
 <?php
     // LOGIN 
     include 'config.php';
-
+    session_start();
+    
     if(isset($_POST['btnLogin'])) 
     {
+        echo 'aaaaaaaaaaaaaa';
         if(isset($_SESSION['id']))
             echo '<p style="color:oranje; font-size:2em;"> No podras hacer login hasta hacer logout. </p>';
         else
@@ -14,7 +16,7 @@
             {
                 case 0:
                     session_start();
-                    $user = obtenerUsuario($_POST['inpUser'])
+                    $user = obtenerUsuario($_POST['inpUser']);
                     $_SESSION['id'] = $user['id'];
                     $_SESSION['usuario'] = $user['username'];
                     $_SESSION['nombre'] = $user['nombre'];
@@ -27,9 +29,6 @@
                     break;
                 case 2:
                     echo '<p style="color:red;">Usuario inactivo. Comprueba tu correo</p>';  
-                    break;
-                case 3:
-                    echo '<p style="color:red;">Error al logerar. Intentalo más tarde</p>';  
                     break;
             }
         }  
@@ -64,11 +63,11 @@
                         </tr>
                         <tr>
                             <td></td> 
-                            <td><button type="submit" name="btnLog">Login!</button> </td> 
+                            <td><input type="submit" name="btnLogin" value="Login!" /> </td> 
                         </tr>
                     </table>
                 </form>
-                <p><a href="">No tiene cuenta? <strong>Registrate</strong></a></p>
+                <p><a href="registro.php">No tiene cuenta? <strong>Registrate</strong></a></p>
             </div>
         </div>
     </body>

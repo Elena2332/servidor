@@ -10,10 +10,10 @@
             $cad = crearCadenaRandom();
             insertUsuario($_POST['inpUser'],$_POST['inpNom'],$_POST['inpPass'],$_POST['inpEmail'],$cad);
         
-            mandarMail($_POST['inpEmail'],$cad);
+            //mandarMail($_POST['inpEmail'],$cad);
         }  
         else
-            echo '<p style="color:red;">El usuario $_POST['inpUser'] ya existe</p>';    
+            echo '<p style="color:red;">El usuario '.$_POST['inpUser'].' ya existe</p>'; 
     }
 
 ?>

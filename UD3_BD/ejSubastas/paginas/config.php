@@ -71,7 +71,7 @@
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
         $sql = "select imagen from imagenes where id_item=$idItem";
         $res = mysqli_query($conn,$sql);
-        if($res -> num_rows() > 0)  // hay imagenes
+        if(mysqli_num_rows($res) > 0)  // hay imagenes
         {
             $imgs = mysqli_fetch_array($res);
             mysqli_close($conn);
@@ -89,12 +89,12 @@
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
         $sql = "select imagen from imagenes where id_item=$idItem";
         $res = mysqli_query($conn,$sql);
-        if($res -> num_rows() > 0)  // hay imagenes
+        if(mysqli_num_rows($res) > 0)  // hay imagenes
         {
             $imagenes = '';
             while($img = mysqli_fetch_assoc($res))
             {
-                $imagenes = $imagenes.'<img src="'.RUTA_IMG.$imgs['imagen'].'" alt="'.$imgs['imagen'].'" width="170"/>';
+                $imagenes = $imagenes.'<img src="'.RUTA_IMG.$img['imagen'].'" alt="'.$img['imagen'].'" width="170"/>';
             }
             mysqli_close($conn);
             return $imagenes;
@@ -106,7 +106,7 @@
         }
     }
 
-    function obtenerUsuario()  // return id,username,nombre,email del usuario 
+    function obtenerUsuario($usu)  // return id,username,nombre,email del usuario 
     {
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
         $sql = "select id,username,nombre,email from usuarios where username='$usu';";
@@ -124,13 +124,34 @@
         return $res[0];
     }
 
+    function login($usu, $pass)
+    {
+        $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
+        //comprobar usuario y contrasena 
+        $sql = "select activo from usuarios where username='$usu' and password='$pass';";
+        $res = mysqli_query($conn,$sql);      
+        mysqli_close($conn);  
+        if(($res -> num_rows) > 0)  //si ha debuelto filas  __.__  [$res -> num_rows] = [mysqli_num_rows($res)]
+        {
+            // comprobar si esta activo
+            if($us = mysqli_fetch_array($res))  
+            {
+                if($us[0] == 0) // usuario inactivo
+                    return 2; 
+                else
+                    return 0; // usuario logeado (todo bien)
+            }
+        }
+        else
+            return 1; // usuario incorrecto
+    }
 
 ///// inserts
     function insertUsuario($usu,$nom,$pass,$email,$cadena)
     {
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
-        $sql = "insert into usuarios (username, nombre, password, email, cadenaverificacion, activo, false) 
-            values ($usu,$nom,$pass,$email,$cadena, 0,0) "; 
+        $sql = "insert into usuarios (username, nombre, password, email, cadenaverificacion, activo, permisos) 
+            values ('$usu','$nom','$pass','$email','$cadena', 1,0) ";  // el mail no funciona, activo por defecto
         $res = mysqli_query($conn,$sql);        
         mysqli_close($conn);
 
@@ -139,51 +160,7 @@
 
 
 ///// alters
-    function login($usu, $pass)
-    {
-        $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
-        //comprobar usuario y contrasena 
-        $sql = "select id from usuarios where username='$usu' and password='$pass';";
-        $res = mysqli_query($conn,$sql);
-        
-        if(($res -> num_rows) > 0)  //si ha debuelto filas  __.__  [$res -> num_rows] = [mysqli_num_rows($res)]
-        {
-            // comprobar si esta activo
-            $sql = "select activo from usuarios where username='$usu';";
-            $res = mysqli_query($conn,$sql);
-            if($us = mysqly_fetch_array($res))  
-            {
-                if($us[0] == 0) // usuario inactivo
-                {
-                    mysqli_close($conn);
-                    return 2; 
-                }
-                else
-                {
-                    //logear usuario
-                    $sql = "UPDATE usuarios set false=1 where nombre='$user' and pass='$pass'";
-                    $res = mysqli_query($con,$sql);
-                    mysqli_close($conn);
-                    if($res) // log actualizado
-                        return 0; // usuario logeado (todo bien)
-                    else
-                        return 3; //error al logear
-                }
-            }
-        }
-        else
-        {
-            mysqli_close($conn);
-            return 1; // usuario incorrecto
-        }
-    }
-
-    function logout($id)
-    {
-        $sql = "UPDATE usuarios set false=0 where id='$id'";
-        $res = mysqli_query($con,$sql); 
-        mysqli_close($conn);
-    }
+    
 
 
 ///// deletes
@@ -200,7 +177,7 @@ function crearCadenaRandom()
     }
     return $randomstring;
 }
-
+/*
 function mandarMail($email,$cadena)
 {
     // mandar mail
@@ -230,6 +207,6 @@ if (isset($_GET['cadverif']))
     echo "Cadena de verificacion:$cadRandom<br/>";            
     //Si hay una tupla en la BD con ese email y esa cadena aleatorio, activar ese usuario
 }
-
+*/
         
 ?>
