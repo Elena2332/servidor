@@ -21,7 +21,7 @@
     <head>
         <title>Registro</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="../estilos/estilo.css">
+        <link rel="stylesheet" type="text/css" href="./estilos/estilo.css">
     </head>
     <body>
         <?php require_once("cabecera.php") ?>
@@ -32,7 +32,7 @@
             </div>
             
             <div id="main">
-                <p>Para registrarse en <em>El mundo ajo la mesa</em>, rellena el siguiente formulario.</p>
+                <p>Para registrarse en <em>El mundo bajo la mesa</em>, rellena el siguiente formulario.</p>
                 <form enctype="multipart/form-data" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                     <table>
                         <tr> 

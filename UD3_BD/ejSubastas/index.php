@@ -1,8 +1,8 @@
 <?php
     // PAGINA PRINCIPAL
-    include './paginas/config.php';
+    include 'config.php';
     session_start();
-    $_SESSION['ultimaPag'] = '../index.php';
+    $_SESSION['ultimaPag'] = 'index.php';
 ?>
 <html>
     <head>
@@ -11,16 +11,16 @@
         <link rel="stylesheet" type="text/css" href="./estilos/estilo.css">
     </head>
     <body>
-        <?php require_once("./paginas/cabecera.php") ?>
+        <?php require_once("./cabecera.php") ?>
 
         <div id="container">
             <div id="bar">
-                <?php require_once("./paginas/bar.php") ?>
+                <?php require_once("./bar.php") ?>
             </div>
             
             <div id="main">
                 <?php 
-                    require_once("./paginas/listProductos.php");
+                    require_once("./listProductos.php");
                 ?>
             </div>
         </div>

@@ -13,7 +13,7 @@
         $id = $item['id'];
         echo "<tr>
             <td>".obtenerPrimImagen($id)."</td>
-            <td><a href='./paginas/itemdetalles.php?id=$id'>".$item['nombre']."</a></td>
+            <td><a href='./itemdetalles.php?id=$id'>".$item['nombre']."</a></td>
             <td>".pujasPorItemNum($id)."</td>";
             $pujaMax = pujaMayor($id);
             if(is_null($pujaMax))

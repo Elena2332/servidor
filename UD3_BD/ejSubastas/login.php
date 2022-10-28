@@ -40,7 +40,7 @@
     <head>
         <title>Login</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="../estilos/estilo.css">
+        <link rel="stylesheet" type="text/css" href="./estilos/estilo.css">
     </head>
     <body>
         <?php require_once("cabecera.php") ?>
@@ -49,6 +49,7 @@
             <div id="bar">
                 <?php require_once("bar.php") ?>
             </div>
+        </div>
             
             <div id="main">
                 <p>Para registrarse en <em>El mundo ajo la mesa</em>, rellena el siguiente formulario.</p>

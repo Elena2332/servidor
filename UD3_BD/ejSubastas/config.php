@@ -70,10 +70,10 @@
         return $max[0];
     }
 
-    function pujasDia($idUsu,$idItem)
+    function pujasDia($idUser,$idItem)
     {
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
-        $sql = "select count(id) from pujas where id_item=$idItem and id_user=$idUsu and fecha=sysdate()";
+        $sql = "select count(id) from pujas where id_item=$idItem and id_user=$idUser and fecha=sysdate()";
         $count = mysqli_fetch_row(mysqli_query($conn,$sql));
         mysqli_close($conn);
         return $count[0];
@@ -158,6 +158,10 @@
         return $res;
     }
 
+    function insertPuja($idUser, $idSeleccionado, $cant)
+    {
+
+    }
 
 ///// alters
     

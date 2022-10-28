@@ -1,7 +1,6 @@
 <?php 
     //DETALLES PUJAS DEL ITEM
-    include './config.php';
-    session_start();
+    include 'config.php';
     $idSeleccionado = -1;
     if(!isset($_GET['id']))
     {
@@ -17,6 +16,12 @@
 
     $item = obtenerItemId($idSeleccionado);
     
+    if(isset($_POST['btnPuja']))  // pujar
+    {
+        insertPuja($idUser, $idSeleccionado, $_POST['inpPuja']);
+    }
+
+
     function dibujarTabla()
     {
         global $idSeleccionado;
@@ -61,9 +66,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./estilos/estilo.css"/>
     <title><?php echo TITULO; ?></title>
 </head>
 <body>
+    
     <div>
         <h2><?php echo $item['nombre']; ?></h2>
         <p>
@@ -83,7 +90,7 @@
             {
                 $imagenes = '';
                 while($img = mysqli_fetch_assoc($res))
-                    $imagenes = $imagenes.'<img src="../img/'.$img['imagen'].'" alt="'.$img['imagen'].'" width="170"/>';
+                    $imagenes = $imagenes.'<img src="./img/'.$img['imagen'].'" alt="'.$img['imagen'].'" width="170"/>';
                 echo $imagenes;
             }
         ?> 
@@ -105,4 +112,3 @@
     </div>
 </body>
 </html>
-
