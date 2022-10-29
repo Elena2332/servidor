@@ -1,8 +1,8 @@
 <?php
     // LOGIN 
     include 'config.php';
-    session_start();
-    
+    // session_start();
+
     if(isset($_POST['btnLogin'])) 
     {
         if(isset($_SESSION['id']))
@@ -20,8 +20,10 @@
                     $_SESSION['usuario'] = $user['username'];
                     $_SESSION['nombre'] = $user['nombre'];
                     $_SESSION['email'] = $user['email'];
-                    
-                    $pag = $_SESSION['ultimaPag'];
+                    if(isset($_SESSION['ultimaPag']))
+                        $pag = $_SESSION['ultimaPag'];
+                    else
+                        $pag = 'index.php';
                     header('Location: '.$pag);
                     exit();
                     break;

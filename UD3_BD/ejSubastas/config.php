@@ -11,7 +11,6 @@
     const TITULO="El Mundo Bajo la Mesa";
     const MONEDA="€";
 
-    
 
 //// obtener datos
     function obtenerItemId($id)
@@ -84,7 +83,7 @@
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
         $sql = "select imagen from imagenes where id_item=$idItem";
         $res = mysqli_query($conn,$sql);
-        if(mysqli_num_rows($res) > 0)  // hay imagenes
+        if(mysqli_num_rows($res) > 0)  // hay imagenes  si ha debuelto filas  __.__  [$res -> num_rows] = [mysqli_num_rows($res)]
         {
             $imgs = mysqli_fetch_array($res);
             mysqli_close($conn);
@@ -129,21 +128,19 @@
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
         //comprobar usuario y contrasena 
         $sql = "select activo from usuarios where username='$usu' and password='$pass';";
-        $res = mysqli_query($conn,$sql);      
+        $res = mysqli_query($conn,$sql);    
+        $us = mysqli_fetch_assoc($res);
         mysqli_close($conn);  
-        if(($res -> num_rows) > 0)  //si ha debuelto filas  __.__  [$res -> num_rows] = [mysqli_num_rows($res)]
+        if($res -> num_rows > 0)
         {
             // comprobar si esta activo
-            if($us = mysqli_fetch_array($res))  
-            {
-                if($us[0] == 0) // usuario inactivo
-                    return 2; 
-                else
-                    return 0; // usuario logeado (todo bien)
-            }
+            if($us['activo'] == 0) // usuario inactivo
+                return 2; 
+            else
+                return 0; // correcto
         }
         else
-            return 1; // usuario incorrecto
+            return 1; //incorrecto
     }
 
 ///// inserts

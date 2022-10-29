@@ -1,51 +1,30 @@
 <?php 
     //DETALLES PUJAS DEL ITEM
     include 'config.php';
+    session_start();
     $idSeleccionado = -1;
     if(!isset($_GET['id']))
     {
-        header('Location: '.$_SESSION['ultimaPag']);
+        header('Location: index.php');
         exit();
     }
-    else
-    {
-        $idSeleccionado = $_GET['id'];
-        if(isset($_SESSION['id']))
-            $_SESSION['ultimaPag'] = 'itemdetalles.php?id='.$idSeleccionado;
-    }
 
+    $idSeleccionado = $_GET['id'];
+    if(isset($_SESSION['ultimaPag']))
+        $_SESSION['ultimaPag'] = 'itemdetalles.php?id='.$idSeleccionado;
     $item = obtenerItemId($idSeleccionado);
-    
-    if(isset($_POST['btnPuja']))  // pujar
+
+
+    if(isset($_POST['btnPujar']))  // pujar
     {
         $puja = $_POST['inpPuja'];
-        if(!empty($puja)  &&  floatval($puja) <= pujaMayor($idSeleccionado))
-            insertPuja($idUser, $idSeleccionado, $puja);
-        header('Location: '.$_SESSION['ultimaPag']);  // actualizar historial
+        var_dump(floatval($puja));
+        if(floatval($puja) > pujaMayor($idSeleccionado))
+            echo 'ajaja';
+        //insertPuja($idUser, $idSeleccionado, $puja);
+        //header('Location: '.$_SESSION['ultimaPag']);  // actualizar historial
     }
 
-
-    function dibujarTabla()
-    {
-        global $idSeleccionado;
-        $txtHTML = '<form  enctype="multipart/form-data" method="POST" action="'.$_SERVER['PHP_SELF'].'"';
-        $txtHTML = $txtHTML.'<table><tr> <td><input type="number" name="inpPuja"/></td> <td><input type="submit" name="btnPujar"/>';
-        if(!isset($_POST['btnPuja']))
-            $txtHTML = $txtHTML.'</td>';
-        else
-        {
-            if(pujasDia($_SESSION['id'],$idSeleccionado) >= 3)
-                $txtHTML = $txtHTML.'<p style="color:red;"> Limite de 3 pujas por dia </p></td>';
-            else
-            {
-                $puja = $_POST['inpPuja'];
-                if(!empty($puja) && floatval($puja) <= pujaMayor($idSeleccionado))
-                    $txtHTML = $txtHTML.'<p style="color:red;"> Puja muy baja </p></td>';
-            }
-        }
-        $txtHTML = $txtHTML.'</tr></table></form>';
-        return $txtHTML;
-    }
 
     function dibujarHistorial()
     {
@@ -73,7 +52,7 @@
     <title><?php echo TITULO; ?></title>
 </head>
 <body>
-<?php require_once("./cabecera.php") ?>
+    <?php require_once("./cabecera.php") ?>
 
     <div id="container">
         <div id="bar">
@@ -105,15 +84,43 @@
             <p> <?php echo $item['descripcion'] ?> </p>
             
             <h2>Puja por este item</h2>
-            <?php
+            <form enctype="multipart/form-data" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+
+                <table>
+                    <tr> 
+                        <td><input type="number" name="inpPuja"/></td> 
+                        <td><button type="submit" name="btnPujar">Puja!</button>
+                    </tr>
+                </table>
+            </form>
+            
+            <?php /*
                 if(!isset($_SESSION['id']))
                     echo 'Para pujar, debes autenticarte <a href="login.php"><strong>aqui</strong></a>';
                 else
                 {
                     echo 'Añade tu puja en el cuadro inferior:';
-                    echo dibujarTabla();
-                }
-                echo dibujarHistorial();
+                    var_dump($_POST);
+                    echo '<table><tr> <td><input type="number" name="inpPuja"/></td> <td><button type="submit" name="btnPujar">Puja!</button>';
+                    if(!isset($_POST['btnPuja']))
+                    {
+                        return '</td>';
+                    }
+                    else
+                    {
+                        echo 'bbbbbbbbb';
+                        if(pujasDia($_SESSION['id'],$idSeleccionado) >= 3)
+                            echo '<p style="color:red;"> Limite de 3 pujas por dia </p></td>';
+                        else
+                        {
+                            $puja = $_POST['inpPuja'];
+                            if(!empty($puja) && floatval($puja) <= pujaMayor($idSeleccionado))
+                                echo'<p style="color:red;"> Puja muy baja </p></td>';
+                        }
+                    }
+                    echo '</tr></table></form>';
+                }*/
+                echo dibujarHistorial();  
             ?>
         </div>
     </div>

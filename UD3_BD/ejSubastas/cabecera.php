@@ -16,5 +16,5 @@
 
 <div id="menu">
     <a href="index.php">Home</a>
-    <?php echo $enlaces ?>
+    <?php echo $enlaces ;?>
 </div>

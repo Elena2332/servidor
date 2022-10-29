@@ -9,7 +9,7 @@
         {
             $cad = crearCadenaRandom();
             insertUsuario($_POST['inpUser'],$_POST['inpNom'],$_POST['inpPass'],$_POST['inpEmail'],$cad);
-        
+            header('Location: index.php');
             //mandarMail($_POST['inpEmail'],$cad);
         }  
         else

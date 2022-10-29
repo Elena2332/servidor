@@ -20,6 +20,7 @@
             
             <div id="main">
                 <?php 
+                    // var_dump($_SESSION);
                     require_once("./listProductos.php");
                 ?>
             </div>
