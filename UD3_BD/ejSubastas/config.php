@@ -22,6 +22,15 @@
         return $item;   
     }
 
+    function obtenerItem($idCat, $idUser, $nom, $fecha, $precio)
+    {
+        $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
+        $sql = "select id from items where id_cat=$idCat and id_user=$idUser and nombre='$nom' and preciopartida=$precio and fechafin='$fecha'";
+        $item = mysqli_fetch_assoc(mysqli_query($conn,$sql));
+        mysqli_close($conn);
+        return $item;   
+    }
+
     function obtenerItemCat($id_cat)
     {
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
@@ -163,6 +172,16 @@
         $res = mysqli_query($conn,$sql);        
         mysqli_close($conn);
 
+        return $res;
+    }
+
+    function insertItem($idCat, $idUser, $nom, $desc, $fecha, $precio)
+    {
+        $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);
+        $sql = "insert into items (id_cat, id_user, nombre, preciopartida, descripcion, fechafin) 
+            values ('$idCat','$idUser','$nom',$precio, '$desc', '$fecha') ";  
+        $res = mysqli_query($conn,$sql);        
+        mysqli_close($conn);
         return $res;
     }
 

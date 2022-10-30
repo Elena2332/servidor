@@ -71,5 +71,6 @@
                 </form>
                 <p><a href="registro.php">No tiene cuenta? <strong>Registrate</strong></a></p>
             </div>
+        </div>
     </body>
 </html>
