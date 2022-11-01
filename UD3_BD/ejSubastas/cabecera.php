@@ -8,6 +8,9 @@
     }
     else
         $enlaces = '<a href="login.php">Login</a>';
+
+    if(isset($_SESSION['nombre'])  &&  $_SESSION['nombre'] == 'admin')
+        $enlaces = $enlaces.'<a href="./vencidas.php">Subastas vencidas</a> <a href="./publi.php">Anunciantes</a>';
 ?>
 
 <div id="header">

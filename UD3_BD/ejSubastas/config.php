@@ -51,6 +51,11 @@
         return $catresult;
     }
 
+    function obtenerGanador($idItem)
+    {
+
+    }
+
     function pujasPorItemDatos($idItem)  // return array con nom_usuario y catidad_dinero
     {
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE);

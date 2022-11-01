@@ -13,8 +13,12 @@
         $id = $item['id'];
         echo "<tr>
             <td>".obtenerPrimImagen($id)."</td>
-            <td><a href='./itemdetalles.php?id=$id'>".$item['nombre']."</a></td>
-            <td>".pujasPorItemNum($id)."</td>";
+            <td><a href='./itemdetalles.php?id=$id'>".$item['nombre']."</a>";
+        if(isset($_SESSION['id'])  &&  $item['id_user'] == $_SESSION['id'])
+        {
+            echo "  <a href='./editarItem.php?id=$id'> [EDITAR] </a>";
+        }
+        echo "</td><td>".pujasPorItemNum($id)."</td>";
             $pujaMax = pujaMayor($id);
             if(is_null($pujaMax))
                echo "<td>".$item['preciopartida'].MONEDA."</td>";
@@ -23,4 +27,5 @@
         echo "<td>".$item['fechafin']."</td> </tr>";
     }    
     echo '</table>';
+
 ?>

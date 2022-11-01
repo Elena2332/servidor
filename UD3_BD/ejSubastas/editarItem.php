@@ -22,7 +22,7 @@
 ?>
 <html>
     <head>
-        <title>Nuevo item</title>
+        <title>Editar item</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="./estilos/estilo.css">
     </head>
@@ -53,6 +53,7 @@
                             </td> 
                         </tr>
                     </table>
+
                     <h2>Imagenes actuales</h2>
                     <?php dibujarImagenes(); ?>
                     <table>
@@ -66,7 +67,7 @@
                             <td colspan="2"><button type="submit" name="btnSubirImg">Subir</button></td>
                         </tr>
                     </table>    
-                    <p style="color:red;"><?php var_dump($errores); ?></p>
+                    <p style="color:red;"><?php echo($errores); ?></p>
                 </form>
             </div>
         </div>
