@@ -1,0 +1,87 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>Combos mySQL</title>
+
+	<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+
+	<!-- Font Awesome -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+	<!-- MDB -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.0/mdb.min.css" rel="stylesheet" />
+	<!-- Bottstrap -->
+
+	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
+
+	<!-- <script type="text/javascript">
+		
+		let peticion_http, tipo_accion
+		window.onload = function(){
+			cargaSelect("provincia")
+			document.getElementById("divmunicipio").style.display="none"
+			document.getElementById("provincia").onchange=cargaSelect
+		}
+		function inicializarXhttp(){
+			if (window.XMLHttpRequest){
+				return new XMLHttpRequest()
+			} else if(window.ActiveXObject){
+				return new ActiveXObject("Microsoft.XMLHTTP")
+			}
+		}
+		function cargaSelect (tipo){
+			if (tipo == "provincia"){
+				let datos = "tipo=provincia&" + Math.random()
+				tipo_accion = "provincia"
+			} else{
+				peticion_http =inicializarXhttp()
+				if(peticion_http){
+					peticion_http.onreadystatechange = procesaOptions
+					peticion_http.open("POST","cargarJSON.php")
+					peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+					peticion_http.send(datos)
+				}
+			}
+		}
+		function procesaOptions (){
+			if(peticion_http.readyState==4 && peticion_http.status == 200){
+				let elementos = eval ("("+ peticion_http.responseText +")")
+				document.getElementById(tipo_accion).options[0] = new Option ("Elige una opción", 0)
+				let i = 1
+				for (let codigo in elementos){
+					document.getElementById(tipo_accion).options[i] = new Option(elementos[codigo], codigo)
+					i++
+				}
+			}
+		}
+		function mostrarSeleccion(){
+			let provincia = document.getElementById("provincia")
+			let municipio = document.getElementById("municipio")
+			if (parseInt(municipio.value) == 0 || parseInt(provincia.value) == 0)
+				mensaje.innerHTML=""
+			
+			else{
+			}
+		}
+	</script> -->
+</head>
+
+<body>
+	
+	<form action="">
+		<div id="divprovincia">
+			<label for="provincia">Provincia:</label>
+			<select id="provincia" class="form-control"> </select>
+		</div><br />
+		<div id="divmunicipio">
+			<label for="municipio">Municipio:</label>
+			<select id="municipio" class="form-control"></select>
+		</div>
+		<div id="mensaje"></div>
+	</form>
+</body>
+<script src="app.js"></script>
+</html>
