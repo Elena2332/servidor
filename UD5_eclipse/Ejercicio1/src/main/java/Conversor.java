@@ -36,8 +36,7 @@ public class Conversor extends HttpServlet
         PrintWriter out = response.getWriter();
         
 		if(request.getParameter("btnCF") != null)   // conversion Celsius -> Fahrenheit
-		{
-			
+		{			
 			String txtHTML = "";
 			out.print(txtHTML);
 		}
