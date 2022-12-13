@@ -1,0 +1,5 @@
+INDEX VERSION 1.4+C:\wamp64\www\servidor\UD5_eclipse\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+1976349493.index
+2356011476.index
+1699837366.index
+472109288.index
