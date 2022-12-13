@@ -1,4 +1,4 @@
-
+package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Ejercicio1
  */
-@WebServlet(name="convertirtemperatura", urlPatterns = {"/conversion"})
-public class Conversor extends HttpServlet 
+@WebServlet(name="convertirtemperatura", urlPatterns = {"/ServletConversor"})
+public class ServletConversor extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Conversor() 
+    public ServletConversor() 
     {
         super();
         // TODO Auto-generated constructor stub
@@ -37,10 +37,11 @@ public class Conversor extends HttpServlet
         
 		if(request.getParameter("btnCF") != null)   // conversion Celsius -> Fahrenheit
 		{
-			String txtHTML = "";
+			String txtHTML = "<h1>Resultado de la conversion:</h1>";
 			out.print(txtHTML);
 		}
-
+		
+		
 		
 		
 	}
