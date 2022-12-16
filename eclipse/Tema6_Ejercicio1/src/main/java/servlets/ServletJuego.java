@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -21,6 +22,7 @@ public class ServletJuego extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private int vidas;
 	private String palabra;
+	private ArrayList<Integer> revelados;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -63,8 +65,6 @@ public class ServletJuego extends HttpServlet {
 	//se ejecuta al entrar en la pagina (lo que deberian hacer doGet y doPost)
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{        
-        final ServletContext context = getServletContext();  
-        
         response.setContentType("text/html;charset=UTF-8");        
         try (PrintWriter out = response.getWriter())   // out permite escribir el html
         {
@@ -75,17 +75,15 @@ public class ServletJuego extends HttpServlet {
     
 	// crea el html de la pagina
 	public void dibujar(HttpServletRequest request, HttpServletResponse response, PrintWriter out)
-	{
-		
-		
+	{	
 		out.print("<!DOCTYPE html> <html> <head><title>Ahorcado xD</title></head> <body>");
 		
 		//formulario
-		out.print("<form action='"+ baseUrl(request) + "ServletLibros' method='post'>");
+		out.print("<form action='"+ baseUrl(request) + "ServletJuego' method='post'>");
 		out.print("<table><tr>");
 		for(int i=0; i<palabra.length() ;i++)
 		{
-			out.print("<td><a href='"+ baseUrl(request) + "'>Ver</a><td>");
+			out.print("<td><a href='"+ baseUrl(request) + "ServletJuego?pos="+i+"'>Ver</a><td>");
 		}
 		
 		out.print("</form>");
