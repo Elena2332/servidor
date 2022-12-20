@@ -60,7 +60,7 @@ public class ServletComprobar extends HttpServlet {
 		
 		if(request.getParameter("btnComprobar") != null)  // comprobar respuesta
     	{
-    		String res = request.getParameter("inpRes");
+    		String res = request.getParameter("inpRes").toUpperCase();
     		if(res != null && res.trim().length()>0)  // si la respuesta no esta vacia
     		{
     			session.setAttribute("final", null);  // el juego aun no termina
@@ -81,10 +81,10 @@ public class ServletComprobar extends HttpServlet {
     		}
     	}
 		
-		// revelar letra
-		Integer get = Integer.parseInt(request.getParameter("pos"));
-    	if(get != null)
+		// revelar letra		
+    	if(request.getParameter("pos") != null)
     	{
+    		Integer get = Integer.parseInt(request.getParameter("pos"));
     		ArrayList<Integer> revelados = (ArrayList) session.getAttribute("revelados");
     		if(!revelados.contains(get))
     		{

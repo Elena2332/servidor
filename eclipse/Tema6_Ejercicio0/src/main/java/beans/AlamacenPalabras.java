@@ -1,5 +1,6 @@
 package beans;
 
+import java.util.Random;
 
 public class AlamacenPalabras {
 
@@ -7,7 +8,8 @@ public class AlamacenPalabras {
 	
 	public static String getPalabra()
 	{
-		int n = (int)Math.random()*palabras.length + 1;
+		Random ran = new Random();
+		int n = ran.nextInt(palabras.length);
 		return palabras[n];
 	}
 }

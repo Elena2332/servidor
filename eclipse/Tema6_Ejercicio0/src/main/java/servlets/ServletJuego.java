@@ -62,8 +62,21 @@ public class ServletJuego extends HttpServlet {
 	{        
         response.setContentType("text/html;charset=UTF-8");        
         try (PrintWriter out = response.getWriter())   // out permite escribir el html
-        {
+        {        	
             HttpSession session = request.getSession(false);  // false: si no esta creada la crea y devuelve null
+            String mensaje = "";
+            
+            if(session != null && session.getAttribute("final") != null)  // si el juego ha terminado
+            {
+            	if((boolean) session.getAttribute("final"))   // gana
+            		mensaje = "Enhorabuena! Has ganado! ";
+            	else	//pierde
+            		mensaje = "Has perdido! La palabra era "+ session.getAttribute("palabra");            	
+            	
+            	session.invalidate();
+            	session = null;
+            }
+            
             if(session == null) //no habia session creada 
             {
             	session = request.getSession(true);  // crea la sesion si no esta creada
@@ -72,11 +85,12 @@ public class ServletJuego extends HttpServlet {
             	ArrayList<Integer> revelados = new ArrayList<Integer>();
             	session.setAttribute("palabra", palabra);
             	session.setAttribute("vidas", vidas);
-            	session.setAttribute("revelados", revelados);            	
+            	session.setAttribute("revelados", revelados);       
+            	System.out.println(palabra);     	
             }
             
             
-            dibujar(request, response, out, session);  //dibujar la pantalla
+            dibujar(request, response, out, session, mensaje);  //dibujar la pantalla
         }
         catch (Exception e) {
 			// TODO: handle exception
@@ -86,13 +100,15 @@ public class ServletJuego extends HttpServlet {
     
     
 	// crea el html de la pagina
-	public void dibujar(HttpServletRequest request, HttpServletResponse response, PrintWriter out, HttpSession session)
+	public void dibujar(HttpServletRequest request, HttpServletResponse response, PrintWriter out, HttpSession session, String mensaje)
 	{	
+		
 		String palabra = (String) session.getAttribute("palabra");
 		int vidas = (Integer) session.getAttribute("vidas");
 		ArrayList<Integer> revelados = (ArrayList) session.getAttribute("revelados");
 		
 		out.print("<!DOCTYPE html> <html> <head><title>Ahorcado xD</title></head> <body>");
+		out.print("<p>"+mensaje+"</p>");
 		
 		//formulario
 		String url = baseUrl(request);
