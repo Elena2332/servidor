@@ -6,9 +6,10 @@ import java.util.Collections;
 
 public class Test {
 
-    private int nPreguntas;
-    private ArrayList<Pregunta> preguntas;
-	private final static Pregunta[] PREGUNTAS_PREPARADAS;    
+    private int nPreguntas;     // cantidad preguntas a realizar
+    private ArrayList<Pregunta> preguntas;      // preguntas a realizar
+	private final static Pregunta[] PREGUNTAS_PREPARADAS;     // todas las preguntas
+    private final int MAX_PREGUNTAS = PREGUNTAS_PREPARADAS.length;
     static {
     	PREGUNTAS_PREPARADAS = new Pregunta[]{
             new Pregunta("Capital de España", "No es Barcelona", new String[]{"Madrid", "Barcelona", "Zaragoza"}, 0),
@@ -20,7 +21,6 @@ public class Test {
             new Pregunta("Que numero de ejercicio es este?","jaja XD",new String[]{"Ejercicio 2","Ejercicio 3","Ejercicio 0"},0)
     	};
     }
-    private final int MAX_PREGUNTAS = PREGUNTAS_PREPARADAS.length;
     
     public Test(int cant)
     {
