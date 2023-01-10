@@ -15,7 +15,7 @@
 		<title>autores</title>
 	</head>
 	<body>
-		<h1>Lista Autores</h1>	
+		<h2>Lista Autores</h2>	
 		<table>
 			<tr>
 				<th>Nombre</th>
@@ -41,5 +41,27 @@
 			%>
 			<%= txtHtml %>
 		</table>
+		
+		<h2>Añadir Autor</h2>
+		<form action="ServletAutores" method="post">
+		<table>
+			<tr>
+				<td>Nombre:</td>
+				<td><input type="text" name="inpNom"></td>
+			</tr>
+			<tr>
+				<td>Fecha nacimiento:</td>
+				<td><input type="text" name="inpFechaNac" ></td>
+			</tr>
+			<tr>
+				<td>Nacionalidad:</td>
+				<td><input type="text" name="inpNaci" ></td>
+			</tr>
+			<tr>
+				<td colspan=2><input type="submit" name="insertarAutor" value="Anadir"></td>
+			</tr>
+		</table>
+            
+        </form>
 	</body>
 </html>

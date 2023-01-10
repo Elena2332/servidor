@@ -20,16 +20,12 @@ public class ServletAutores extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private GestorBD gestor;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ServletAutores() {
-        super();
-        // TODO Auto-generated constructor stub
-        gestor =  new GestorBD();
-        
-    }
-
+	 @Override
+	    public void init(ServletConfig config) throws ServletException {
+	        super.init(config);
+	        gestor =  new GestorBD();
+	    }	
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */

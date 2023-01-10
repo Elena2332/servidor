@@ -6,6 +6,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,7 +40,7 @@ public class GestorBD {
         dataSource.setUrl(URL);
         dataSource.setUsername(USER);
         dataSource.setPassword(PASS);
-        //Indicamos el tamaño del pool de conexiones
+        //Indicamos el tamaï¿½o del pool de conexiones
         dataSource.setInitialSize(50);
     }
     
@@ -86,7 +87,7 @@ public class GestorBD {
         return autores;
     }
     
-    public HashMap<Integer, Autor> datosAutores()
+    public HashMap<Integer, Autor> datosAutores()  
     {
         HashMap<Integer, Autor> autores = new HashMap<Integer, Autor>();
         String sql = "SELECT id, nombre, fechanac, nacionalidad FROM autor";
@@ -155,4 +156,83 @@ public class GestorBD {
         
         return id;
     }
+    
+    public int insertarAutor(Autor autor)
+    {   	
+        try {
+        	if(!existeAutor(autor))
+        	{
+        		String sql = "INSERT INTO autor(nombre, fechanac, nacionalidad) VALUES(?, ?, ?)";
+                Connection con = dataSource.getConnection();
+                PreparedStatement st = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                st.setString(1, autor.getNombre());
+                st.setDate(2, (Date) autor.getFechanac());
+                st.setString(3, autor.getNacionalidad());
+                
+                st.executeUpdate();
+                
+                ResultSet rs = st.getGeneratedKeys();
+                rs.next();
+            
+            	int id = rs.getInt(1);
+            	rs.close();   
+                st.close();
+                con.close();
+                return id;
+                	
+        	}
+        	else
+    			return 0;
+            
+        } catch (SQLException ex) {
+            System.err.println("Error en metodo insertarLibro: " + ex);
+            return -1;
+        }    	
+    }
+    
+    public boolean existeAutor(Autor autor)
+    {
+    	boolean existe = false;
+        String sql = "select id from autor where nombre = '"+ autor.getNombre() +"' and nacionalidad = " + autor.getNacionalidad();
+        try {
+            Connection con = dataSource.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if(rs.next())
+                existe = true;
+            
+            rs.close();
+            st.close();
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        	return existe;
+        }
+        return existe;
+    }
+    
+    public ArrayList<Libro> librosAutor(int idAutor)
+    {
+    	ArrayList<Libro> libros = new ArrayList<Libro>();
+    	String sql = "SELECT titulo FROM libro where idAutor= ? ";
+        try {
+            Connection con = dataSource.getConnection();
+            PreparedStatement st = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            st.setInt(1, idAutor);
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                Libro libro = new Libro(rs.getInt("id"), rs.getString("titulo"),
+                                        rs.getInt("paginas"), rs.getString("genero"), 
+                                        rs.getInt("idAutor"));
+                libros.add(libro);
+            }
+            rs.close();
+            st.close();
+            con.close();
+        } catch (SQLException ex) {
+            System.err.println("Error en metodo libros: " + ex);
+        }
+    	return libros;
+    }
+    
 }
