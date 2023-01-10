@@ -220,12 +220,9 @@ public class GestorBD {
             PreparedStatement st = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             st.setInt(1, idAutor);
             ResultSet rs = st.executeQuery(sql);
-            while(rs.next()){
-                Libro libro = new Libro(rs.getInt("id"), rs.getString("titulo"),
-                                        rs.getInt("paginas"), rs.getString("genero"), 
-                                        rs.getInt("idAutor"));
-                libros.add(libro);
-            }
+            while(rs.next())
+                libros.add(new Libro(rs.getInt("id"), rs.getString("titulo"),rs.getInt("paginas"), rs.getString("genero"), rs.getInt("idAutor")));
+            
             rs.close();
             st.close();
             con.close();
