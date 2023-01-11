@@ -52,7 +52,10 @@
 				<tr>
 					<td colspan=2><input type="submit" name="insertarAutor" value="Anadir"></td>
 				</tr>
-			</table>            
+			</table>  
+			<c:if test="${autoresDatos == null}">
+            	<p>${mensaje}</p>
+	        </c:if>    			
         </form>
         
          <c:forEach items="${autoresDatos}" var="autor">

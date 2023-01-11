@@ -59,9 +59,9 @@ public class ServletAutores extends HttpServlet {
             request.getSession().setAttribute("librosAutor", gestor.librosAutor(id));        	
         
         //insertar autores
+    	String mensaje = "";
         if(request.getParameter("insertarAutor") == null)
         {
-        	String mensaje = "";
         	//comprobaciones
         	if(!request.getParameter("inpNom").equals("") || !request.getParameter("inpFechaNac").equals("") || !request.getParameter("inpNaci").equals(""))
         	{
@@ -69,23 +69,26 @@ public class ServletAutores extends HttpServlet {
         		Date fecha = new Date(request.getParameter("inpFechaNac"));
         		String nacionalidad = request.getParameter("inpNaci");
         		Autor autorNuevo = new Autor(nombre,fecha,nacionalidad);
-        		if(!gestor.existeAutor(autorNuevo))
-        		{
-        			if(fecha.compareTo(new Date())<0)   //  fecha menor a la actual
-        			{
-        				gestor.insertarAutor(autorNuevo);
-        			}
-        			else
-        			{
-        				mensaje = "formato de la fecha incorrecto"; 
-        			}
-        		}
-        		else
-        			mensaje = "El autor "+nombre+" ya existe";
+    			if(fecha.compareTo(new Date())<0)   //  fecha menor a la actual
+    			{
+    				int idNuevo = gestor.insertarAutor(autorNuevo);
+    				if(idNuevo > 0)   //insertado sin problemas
+    					mensaje = nombre+" añadido correctamente";
+    				else
+    				{
+    					if(idNuevo == 0)   // autor ya existe
+    						mensaje = "El autor "+nombre+" ya existe";
+    					else
+    						mensaje = "error al insertar en la base de datos";
+    				}
+    			}
+    			else
+    				mensaje = "formato de la fecha incorrecto";     			
         	}
         	else
         		mensaje = "Rellene todos los campos";
         }
+        request.getSession().setAttribute("mensaje", mensaje);
 	}
 	
 }
