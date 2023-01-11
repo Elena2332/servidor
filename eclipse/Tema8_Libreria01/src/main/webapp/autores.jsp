@@ -1,12 +1,9 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="beans.Autor"%>
 <%@page import="java.util.Set"%>
 <%@page import="java.util.HashMap"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    
-<%!
-
-%>
 
 <!DOCTYPE html>
 <html>
@@ -23,23 +20,19 @@
 				<th>Nacionalidad</th>
 				<th>Ver Libros</th>
 			</tr>
-			<%
-				String txtHtml = "";
-				HashMap<Integer, Autor> autores = (HashMap<Integer, Autor>) session.getAttribute("autoresDatos");
-				System.out.println(autores);
-				Set<Integer> keys = autores.keySet();
-				for(int id : keys)
-				{
-					txtHtml += "<tr>";
-					Autor autor = autores.get(id);
-					txtHtml += "<td>"+autor.getNombre()+"</td>";
-					txtHtml += "<td>"+autor.getFechanac()+"</td>";
-					txtHtml += "<td>"+autor.getNacionalidad()+"</td>";
-					txtHtml += "<td><a href='ServletAutor?idAutor="+id+"'>Ver Libros</a></td>";
-					txtHtml += "</tr>";
-				}
-			%>
-			<%= txtHtml %>
+			
+			<c:if test="${autoresDatos == null}">
+            	<jsp:forward page="ServletAutores"/>
+	        </c:if>
+	        
+	        <c:forEach items="${autoresDatos}" var="autor">
+	            <tr>
+					<td>${autor.getNombre()}</td>
+					<td>${autor.getFechanac()}</td>
+					<td>${autor.getNacionalidad()}</td>
+				 	<td><a href='ServletAutores?idAutor=${autor.id}'>Ver Libros</a></td>
+				</tr>
+        	</c:forEach>
 		</table>
 		
 		<h2>Añadir Autor</h2>

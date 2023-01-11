@@ -87,9 +87,9 @@ public class GestorBD {
         return autores;
     }
     
-    public HashMap<Integer, Autor> datosAutores()  
+    public ArrayList<Autor> datosAutores()  
     {
-        HashMap<Integer, Autor> autores = new HashMap<Integer, Autor>();
+    	ArrayList<Autor> autores = new ArrayList<Autor>();
         String sql = "SELECT id, nombre, fechanac, nacionalidad FROM autor";
         Connection con;
         try {
@@ -97,7 +97,7 @@ public class GestorBD {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while(rs.next())
-                autores.put(rs.getInt("id"),new Autor(rs.getInt("id"), rs.getString("nombre"), rs.getDate("fechanac"), rs.getString("nacionalidad")));
+                autores.add(new Autor(rs.getInt("id"), rs.getString("nombre"), rs.getDate("fechanac"), rs.getString("nacionalidad")));
             rs.close();
             st.close();
             con.close();
