@@ -24,6 +24,13 @@ public class Autor {
         this.nacionalidad = nacionalidad;
     }
 
+    public Autor(String nombre, Date fechanac, String nacionalidad)
+    {
+    	this.nombre = nombre;
+        this.fechanac = fechanac;
+        this.nacionalidad = nacionalidad;
+    }
+    
     public Autor() {
     }
 

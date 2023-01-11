@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import beans.Autor;
 import dao.GestorBD;
 
 /**
@@ -32,16 +34,7 @@ public class ServletAutores extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		HttpSession session = request.getSession(false);
-		if(session == null)  // hay que crear la sesion
-		{
-			session = request.getSession(true);
-	        //request.getSession().setAttribute("libros", gestor.libros());
-	        request.getSession().setAttribute("autoresDatos", gestor.datosAutores());
-		}
-		session = request.getSession(true);
-        request.getRequestDispatcher("autores.jsp").forward(request, response);
-		processRequest(request,response,session);
+		processRequest(request,response);
 	}
 
 	/**
@@ -53,9 +46,46 @@ public class ServletAutores extends HttpServlet {
 	}
 
 	
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		
+		// SESION
+		HttpSession session = request.getSession(true);
+        request.getSession().setAttribute("autoresDatos", gestor.datosAutores());
+        request.getRequestDispatcher("autores.jsp").forward(request, response);
+        
+        //listar libros
+        String id = request.getParameter("idAutor");
+        if(id != null)
+            request.getSession().setAttribute("librosAutor", gestor.librosAutor(id));        	
+        
+        //insertar autores
+        if(request.getParameter("insertarAutor") == null)
+        {
+        	String mensaje = "";
+        	//comprobaciones
+        	if(!request.getParameter("inpNom").equals("") || !request.getParameter("inpFechaNac").equals("") || !request.getParameter("inpNaci").equals(""))
+        	{
+        		String nombre = request.getParameter("inpNom");
+        		Date fecha = new Date(request.getParameter("inpFechaNac"));
+        		String nacionalidad = request.getParameter("inpNaci");
+        		Autor autorNuevo = new Autor(nombre,fecha,nacionalidad);
+        		if(!gestor.existeAutor(autorNuevo))
+        		{
+        			if(fecha.compareTo(new Date())<0)   //  fecha menor a la actual
+        			{
+        				gestor.insertarAutor(autorNuevo);
+        			}
+        			else
+        			{
+        				mensaje = "formato de la fecha incorrecto"; 
+        			}
+        		}
+        		else
+        			mensaje = "El autor "+nombre+" ya existe";
+        	}
+        	else
+        		mensaje = "Rellene todos los campos";
+        }
 	}
 	
 }

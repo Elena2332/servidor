@@ -91,9 +91,8 @@ public class GestorBD {
     {
     	ArrayList<Autor> autores = new ArrayList<Autor>();
         String sql = "SELECT id, nombre, fechanac, nacionalidad FROM autor";
-        Connection con;
         try {
-            con = dataSource.getConnection();
+            Connection con = dataSource.getConnection();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while(rs.next())
@@ -211,15 +210,15 @@ public class GestorBD {
         return existe;
     }
     
-    public ArrayList<Libro> librosAutor(int idAutor)
+    public ArrayList<Libro> librosAutor(String idAutor)
     {
     	ArrayList<Libro> libros = new ArrayList<Libro>();
-    	String sql = "SELECT titulo FROM libro where idAutor= ? ";
+    	String sql = "SELECT id,titulo,paginas,genero,idAutor FROM libro where idautor= ?";
         try {
             Connection con = dataSource.getConnection();
-            PreparedStatement st = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            st.setInt(1, idAutor);
-            ResultSet rs = st.executeQuery(sql);
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, idAutor);
+            ResultSet rs = st.executeQuery();
             while(rs.next())
                 libros.add(new Libro(rs.getInt("id"), rs.getString("titulo"),rs.getInt("paginas"), rs.getString("genero"), rs.getInt("idAutor")));
             
@@ -227,7 +226,7 @@ public class GestorBD {
             st.close();
             con.close();
         } catch (SQLException ex) {
-            System.err.println("Error en metodo libros: " + ex);
+            System.err.println("Error en metodo librosAutor: " + ex);
         }
     	return libros;
     }
