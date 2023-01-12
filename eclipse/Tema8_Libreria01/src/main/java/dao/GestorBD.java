@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -165,7 +164,7 @@ public class GestorBD {
                 Connection con = dataSource.getConnection();
                 PreparedStatement st = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 st.setString(1, autor.getNombre());
-                st.setDate(2, (Date) autor.getFechanac());
+                st.setDate(2, (Date) autor.getFechaSQL());
                 st.setString(3, autor.getNacionalidad());
                 
                 st.executeUpdate();
@@ -184,7 +183,7 @@ public class GestorBD {
     			return 0;
             
         } catch (SQLException ex) {
-            System.err.println("Error en metodo insertarLibro: " + ex);
+            System.err.println("Error en metodo insertarAutor: " + ex);
             return -1;
         }    	
     }
@@ -192,7 +191,7 @@ public class GestorBD {
     public boolean existeAutor(Autor autor)
     {
     	boolean existe = false;
-        String sql = "select id from autor where nombre = '"+ autor.getNombre() +"' and nacionalidad = " + autor.getNacionalidad();
+        String sql = "select id from autor where nombre = '"+ autor.getNombre() +"' and nacionalidad = '" + autor.getNacionalidad()+"'";
         try {
             Connection con = dataSource.getConnection();
             Statement st = con.createStatement();

@@ -60,7 +60,7 @@ public class ServletAutores extends HttpServlet {
         
         //insertar autores
     	String mensaje = "";
-        if(request.getParameter("insertarAutor") == null)
+        if(request.getParameter("insertarAutor") != null)
         {
         	//comprobaciones
         	if(!request.getParameter("inpNom").equals("") || !request.getParameter("inpFechaNac").equals("") || !request.getParameter("inpNaci").equals(""))

@@ -45,6 +45,10 @@ public class Autor {
     public Date getFechanac() {
         return fechanac;
     }
+    public java.sql.Date getFechaSQL() {
+    	return new java.sql.Date(fechanac.getTime());
+    	//return new java.sql.Date(fechanac.getYear(), fechanac.getMonth(), fechanac.getDay());     // deprecado
+    }
 
     public String getNacionalidad() {
         return nacionalidad;
