@@ -7,7 +7,9 @@
         <title>Libreria</title>
     </head>
     <body>    
-        <a href="autores.jsp">Nuevas funcionalidades</a>  
+        <a href="autores.jsp">Autores</a>
+        <br>
+        <a href="devoluciones.jsp">Devoluciones</a>  
         <hr>
             
         <%-- El parámetro libros se encuentran el ambito de sesión --%>

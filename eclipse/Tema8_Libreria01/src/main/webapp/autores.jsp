@@ -11,6 +11,9 @@
 		<title>autores</title>
 	</head>
 	<body>
+		<a href="index.jsp"> &#60;-- Volver </a>  
+        <hr>
+        
 		<h2>Lista Autores</h2>	
 		<table>
 			<tr>

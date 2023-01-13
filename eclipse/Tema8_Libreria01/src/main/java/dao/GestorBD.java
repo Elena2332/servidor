@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,7 @@ import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 
 import beans.Autor;
 import beans.Libro;
+import beans.Prestamo;
 
 /**
  *
@@ -43,6 +45,7 @@ public class GestorBD {
         dataSource.setInitialSize(50);
     }
     
+/////  SELECT
     public ArrayList<Libro> libros(){
         ArrayList<Libro> libros = new ArrayList<Libro>();
         String sql = "SELECT * FROM libro";
@@ -105,6 +108,72 @@ public class GestorBD {
         
         return autores;
     } 
+
+    public ArrayList<Libro> librosAutor(String idAutor)
+    {
+    	ArrayList<Libro> libros = new ArrayList<Libro>();
+    	String sql = "SELECT id,titulo,paginas,genero,idAutor FROM libro where idautor= ?";
+        try {
+            Connection con = dataSource.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, idAutor);
+            ResultSet rs = st.executeQuery();
+            while(rs.next())
+                libros.add(new Libro(rs.getInt("id"), rs.getString("titulo"),rs.getInt("paginas"), rs.getString("genero"), rs.getInt("idAutor")));
+            
+            rs.close();
+            st.close();
+            con.close();
+        } catch (SQLException ex) {
+            System.err.println("Error en metodo librosAutor: " + ex);
+        }
+    	return libros;
+    }
+    
+    public ArrayList<Prestamo> sacarPrestamos()
+    {
+    	ArrayList<Prestamo> prestamos = new ArrayList<Prestamo>();
+    	String sql = "select p.id,p.fecha,p.idlibro ,l.titulo,l.paginas,l.genero,l.idautor "
+    			+ "from prestamo p ,libro l "
+    			+ "where l.id = p.idlibro "
+    			+ "order by fecha desc ";
+        try {
+            Connection con = dataSource.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while(rs.next())
+            	prestamos.add(new Prestamo(rs.getInt("id"), rs.getDate("fecha"), new Libro(rs.getInt("idlibro"),rs.getString("titulo"),rs.getInt("paginas"),rs.getString("genero"),rs.getInt("idautor")))); 
+            
+            rs.close();
+            st.close();
+            con.close();
+        } catch (SQLException ex) {
+            System.err.println("Error en metodo prestamos: " + ex);
+        }
+    	return prestamos;
+    }
+    
+    public HashMap<Libro,Integer[]> filtrarPrestamos(ArrayList<Prestamo> prestamos)
+    {
+    	HashMap<Libro,Integer[]> filtrados = new HashMap<Libro,Integer[]>();   // libro, [dias prestado,idPrestamo]
+    	for(Prestamo pres : prestamos)
+    	{
+    		Libro libro = pres.getLibro();
+    		if(prestamos.indexOf(libro) < 0)   // aniadir si no esta en el map
+    		{
+    			Integer[] aux = {diasTranscurridos(pres.getFecha()), pres.getIdPrestamo()};
+    			filtrados.put(libro, aux);
+    		}
+    	}
+    	return filtrados;
+    }
+    public int diasTranscurridos(Date fecha)
+    {
+    	int dias = 0;
+    	
+    	return dias;
+    }
+    
     
     public boolean existeLibro(Libro libro){
         boolean existe = false;
@@ -125,7 +194,30 @@ public class GestorBD {
         }
         return existe;
     }
+
+    public boolean existeAutor(Autor autor)
+    {
+    	boolean existe = false;
+        String sql = "select id from autor where nombre = '"+ autor.getNombre() +"' and nacionalidad = '" + autor.getNacionalidad()+"'";
+        try {
+            Connection con = dataSource.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if(rs.next())
+                existe = true;
+            
+            rs.close();
+            st.close();
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        	return existe;
+        }
+        return existe;
+    }
     
+    
+////// INSERT
     public int insertarLibro(Libro libro){
         int id = -1;
         String sql = "INSERT INTO libro(titulo, paginas, genero, idautor) "
@@ -186,48 +278,6 @@ public class GestorBD {
             System.err.println("Error en metodo insertarAutor: " + ex);
             return -1;
         }    	
-    }
-    
-    public boolean existeAutor(Autor autor)
-    {
-    	boolean existe = false;
-        String sql = "select id from autor where nombre = '"+ autor.getNombre() +"' and nacionalidad = '" + autor.getNacionalidad()+"'";
-        try {
-            Connection con = dataSource.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            if(rs.next())
-                existe = true;
-            
-            rs.close();
-            st.close();
-            con.close();
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        	return existe;
-        }
-        return existe;
-    }
-    
-    public ArrayList<Libro> librosAutor(String idAutor)
-    {
-    	ArrayList<Libro> libros = new ArrayList<Libro>();
-    	String sql = "SELECT id,titulo,paginas,genero,idAutor FROM libro where idautor= ?";
-        try {
-            Connection con = dataSource.getConnection();
-            PreparedStatement st = con.prepareStatement(sql);
-            st.setString(1, idAutor);
-            ResultSet rs = st.executeQuery();
-            while(rs.next())
-                libros.add(new Libro(rs.getInt("id"), rs.getString("titulo"),rs.getInt("paginas"), rs.getString("genero"), rs.getInt("idAutor")));
-            
-            rs.close();
-            st.close();
-            con.close();
-        } catch (SQLException ex) {
-            System.err.println("Error en metodo librosAutor: " + ex);
-        }
-    	return libros;
     }
     
 }

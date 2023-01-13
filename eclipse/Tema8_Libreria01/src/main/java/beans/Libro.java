@@ -5,6 +5,8 @@
  */
 package beans;
 
+import java.util.Objects;
+
 /**
  *
  * @author Akaitz
@@ -73,5 +75,25 @@ public class Libro {
     public void setIdAutor(int idAutor) {
         this.idAutor = idAutor;
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(idAutor, idLibro, titulo);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Libro other = (Libro) obj;
+		return idAutor == other.idAutor && idLibro == other.idLibro && Objects.equals(titulo, other.titulo);
+	}
+    
+    
+    
     
 }
