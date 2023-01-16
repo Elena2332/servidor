@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import beans.Libro;
-import beans.Prestamo;
+import beans.LibroPrestado;
 import dao.GestorBD;
 
 /**
@@ -54,12 +54,22 @@ public class ServletDevolver extends HttpServlet {
 	{
 		// SESION
 		HttpSession session = request.getSession(true);
-		HashMap<Libro,Integer[]> prestamos = gestor.filtrarPrestamos(gestor.sacarPrestamos());   // prestamos sin libros repetidos
+		ArrayList<LibroPrestado> prestamos = gestor.sacarPrestamos();   
         request.getSession().setAttribute("prestamos", prestamos);
-        request.getRequestDispatcher("devoluciones.jsp").forward(request, response);
         
-        //almacenar todos los prestamos
-        //request.getSession().setAttribute("prestamos", gestor.prestamos());
+        // DEVOLUCIONES
+        ArrayList<String> devoluciones = new ArrayList<String>();   
+        String idDev = String.valueOf(request.getParameter("devolver"));
+        String idPres = String.valueOf(request.getParameter("revertir"));
+        if(idDev != null)    //devolver libro
+        	if(!devoluciones.contains(idDev))
+        		devoluciones.add(idDev);
+        else
+        	if(idPres != null)    //descartar devolucion
+            	devoluciones.remove(idPres);
+        
+        request.getSession().setAttribute("devoluciones", devoluciones);
+        request.getRequestDispatcher("devoluciones.jsp").forward(request, response);
 	}
 
 }

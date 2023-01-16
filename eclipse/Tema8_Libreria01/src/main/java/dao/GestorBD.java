@@ -21,7 +21,7 @@ import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 
 import beans.Autor;
 import beans.Libro;
-import beans.Prestamo;
+import beans.LibroPrestado;
 
 /**
  *
@@ -130,47 +130,77 @@ public class GestorBD {
     	return libros;
     }
     
-    public ArrayList<Prestamo> sacarPrestamos()
+    public ArrayList<LibroPrestado> sacarPrestamos()
     {
-    	ArrayList<Prestamo> prestamos = new ArrayList<Prestamo>();
-    	String sql = "select p.id,p.fecha,p.idlibro ,l.titulo,l.paginas,l.genero,l.idautor "
-    			+ "from prestamo p ,libro l "
-    			+ "where l.id = p.idlibro "
+    	ArrayList<LibroPrestado> prestamos = new ArrayList<LibroPrestado>();
+    	String sql = "select p.id,p.fecha, l.titulo "
+    			+ "from prestamo p, libro l "
+    			+ "where p.idlibro = l.id "
     			+ "order by fecha desc ";
         try {
             Connection con = dataSource.getConnection();
             PreparedStatement st = con.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while(rs.next())
-            	prestamos.add(new Prestamo(rs.getInt("id"), rs.getDate("fecha"), new Libro(rs.getInt("idlibro"),rs.getString("titulo"),rs.getInt("paginas"),rs.getString("genero"),rs.getInt("idautor")))); 
+            {
+            	LibroPrestado lib = new LibroPrestado(rs.getInt("id"), rs.getDate("fecha"),rs.getString("titulo"),diasTranscurridos(rs.getDate("fecha")));
+            	if(!prestamos.contains(lib))
+                	prestamos.add(lib); 
+            }
             
             rs.close();
             st.close();
             con.close();
         } catch (SQLException ex) {
-            System.err.println("Error en metodo prestamos: " + ex);
+            System.err.println("Error en metodo sacarPrestamos: " + ex);
         }
     	return prestamos;
     }
-    
-    public HashMap<Libro,Integer[]> filtrarPrestamos(ArrayList<Prestamo> prestamos)
+    /*
+    public ArrayList<LibroPrestado> filtrarPrestamos(ArrayList<LibroPrestado> prestamos)
     {
-    	HashMap<Libro,Integer[]> filtrados = new HashMap<Libro,Integer[]>();   // libro, [dias prestado,idPrestamo]
-    	for(Prestamo pres : prestamos)
+    	ArrayList<LibroPrestado> filtrados = new ArrayList<LibroPrestado>();
+    	for(LibroPrestado pres : prestamos)
     	{
-    		Libro libro = pres.getLibro();
-    		if(prestamos.indexOf(libro) < 0)   // aniadir si no esta en el map
+    		if(!filtrados.contains(pres))   // evitar que aparezcan prestamos con los mismo libros
     		{
-    			Integer[] aux = {diasTranscurridos(pres.getFecha()), pres.getIdPrestamo()};
-    			filtrados.put(libro, aux);
-    		}
+	    		int idLibro = pres.getIdLibro();
+	    		pres.setLibro(libroPorId(idLibro));
+	    		pres.setDiasPrestado(diasTranscurridos(pres.getFecha()));
+	    		filtrados.add(pres);	
+    		}    		
     	}
     	return filtrados;
     }
-    public int diasTranscurridos(Date fecha)
+   
+    
+    public Libro libroPorId(int id)
     {
-    	int dias = 0;
-    	
+    	Libro libro = null;
+    	String sql = "select * from libro where id = "+id;
+        try {
+            Connection con = dataSource.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if(rs.next())
+            	libro = new Libro(rs.getInt("id"), rs.getString("titulo"),rs.getInt("paginas"),rs.getString("genero"),rs.getInt("idautor")); 
+            
+            rs.close();
+            st.close();
+            con.close();
+        } catch (SQLException ex) {
+            System.err.println("Error en metodo libroPorId: " + ex);
+        }
+    	return libro;
+    }
+     */
+    
+    public long diasTranscurridos(Date fecha)
+    {
+    	long milisegDia = 24*60*60*1000;    // milisegundos en un dia
+    	long fechaActual = new java.util.Date().getTime();  //milisegundos desde 1970
+    	long fechaPrestado = fecha.getTime(); //milisegundos desde 1970
+    	long dias = (fechaActual - fechaPrestado)/milisegDia;    //conversion dias
     	return dias;
     }
     
