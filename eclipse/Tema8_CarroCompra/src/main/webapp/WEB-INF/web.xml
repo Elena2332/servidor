@@ -8,11 +8,6 @@
 		<welcome-file>login.jsp</welcome-file>
 	</welcome-file-list>
 	
-	<servlet>
-		<servlet-name>ServletLogin</servlet-name>
-		<servlet-class>servlets.ServletLogin</servlet-class>
-	</servlet>
-	
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>
