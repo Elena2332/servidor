@@ -5,12 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="ISO-8859-1">
-	<title>Login</title>
+<meta charset="ISO-8859-1">
+<title>Registro</title>
 </head>
 <body>
-	<h1>LOGIN</h1>
-	<form action="ServletLogin" method="post">
+	<form action="ServletRegistro" method="post">
 	<table>
 		<tr>
 			<td><label>Usuario:</label></td>
@@ -20,14 +19,29 @@
 			<td><label>Contraseña:</label></td>
 			<td><input name="inpPass" type="password"></td>
 		</tr>
+		<tr>
+			<td><label>Domicilio:</label></td>
+			<td><input name="inpDomi" type="text"></td>
+		</tr>
+		<tr>
+			<td><label>CP:</label></td>
+			<td><input name="inpCP" type="number"></td>
+		</tr>
+		<tr>
+			<td><label>Telefono:</label></td>
+			<td><input name="inpTelf" type="text"></td>
+		</tr>
+		<tr>
+			<td><label>Email:</label></td>
+			<td><input name="inpEmail" type="email"></td>
+		</tr>
 	</table>
 	<c:if test="${mensaje != null}">
 		<p style="color:red;">${mensaje}</p>
 	</c:if>
 	<div>
-		<input name="btnLogin" type="submit" value="Login">
+		<input name="btnRegistrar" type="submit" value="Registrarse">
 		<input name="btnReset" type="reset" value="Reset">
-		<a href="registro.jsp">REGISTRARSE</a>
 	</div>		
 	</form>
 </body>
