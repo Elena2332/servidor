@@ -62,7 +62,35 @@ public class ClienteDAO {
 	
 	
 	public static boolean guardarCliente(Cliente cliente)
-	{
+	{        
+        int id = -1;
+        String sql = "INSERT INTO clientes(id, nombre, password, domicilio, codigopostal, telefono, email) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        try {
+            Connection con = PoolConexiones.getConnection();
+            PreparedStatement st = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            st.stInt(1, KeysDAO.siguienteID("clientes"));
+            st.setString(2, cliente.getNombre());
+            st.setString(3, cliente.getPass());
+            st.setString(4, cliente.getDomicilio());
+            st.setString(5, cliente.getCP());
+            st.setString(6, cliente.getTelefono());
+            st.setString(7, cliente.getEmail());
+            
+            st.executeUpdate();
+            
+            ResultSet rs = st.getGeneratedKeys();
+            if(rs.next()){
+                id = rs.getInt(1);
+            }
+            
+            rs.close();
+            st.close();
+            con.close();
+        } catch (SQLException ex) {
+        	System.out.println("Error en guardarCliente()");
+            System.out.println(ex.getMessage());
+        }
+	        
 		return true;
 	}
 	
