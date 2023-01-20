@@ -52,61 +52,44 @@ public class ServletPrepararProductos extends HttpServlet {
 	{  
 		// categorias
 		String cat = request.getParameter("cate");
-		HashMap<String,ArrayList<String>>productos = obtenerContenido(request,cat);	
+		ArrayList<String> productos = productosPorCategoria(cat);
 		
 		//session
 		HttpSession session = request.getSession(false);
 		if(session == null)  // crear la sesion
 			session = request.getSession(true);
 		session.setAttribute("productos", productos);
+		session.setAttribute("categoria", cat);
 		
 		// al jsp
 		response.sendRedirect("compra.jsp");
 	}
 	
-	private HashMap<String,ArrayList<String>> obtenerContenido(HttpServletRequest request, String cate)
+	public ArrayList<String> productosPorCategoria (String cat)
 	{
-		try 
-		{	
-			HashMap<String,ArrayList<String>>categorias = new HashMap<String,ArrayList<String>>();	
-			String fich = request.getServletContext().getRealPath("productos.txt");	
-			BufferedReader bf = new BufferedReader(new FileReader(fich));
-			String linea = bf.readLine();
-	        while(linea != null)
-	        {
-	            String[] lin = linea.split(";");
-	            if(cate == null)   // todas las categorias
-	            {
-	            	ArrayList<String> valor = categorias.get(lin[0]);
-		            if(valor == null)  // categoria nueva
-		            {
-		            	valor = new ArrayList<String>();
-		            	valor.add(lin[1]);
-		            	categorias.put(lin[0], valor);
-		            }
-		            else   // aniadir el valor a la categoria
-		            {
-		            	valor.add(lin[1]);
-		            	categorias.put(lin[0], valor);
-		            }
-	            }
-	            else  // una categoria en concreto
-	            {
-	            	if(cate.equals(lin[0]))   // aniadir al array
-	            	{
-	            		
-	            	}
-	            }
-	            
-	        	linea = bf.readLine();
-	        } 	        
-	        bf.close();
-	        return categorias;
-		}
-		catch(Exception e)
+		ArrayList<String> productos = new ArrayList<String>();
+		String ruta = this.getServletContext().getRealPath("productos.txt");
+		
+		try  
 		{
-			System.out.print(e.getMessage());
-			return null;
-		}
+			BufferedReader reader = new BufferedReader(new FileReader(ruta));
+			String linea = reader.readLine();
+			while (linea != null)
+			{
+				String params[] = linea.split(";");
+				if (!params[0].equals("-") && cat != null) 
+				{
+					if (cat.equals(params[0])) 
+						productos.add(params[1]);					
+				}
+				else 
+					productos.add(params[1]);				
+			}
+			return productos;
+		} catch (Exception ex)
+		{
+            ex.printStackTrace();
+            return null;
+        }
 	}
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import beans.Cliente;
 import conex.PoolConexiones;
@@ -68,11 +69,11 @@ public class ClienteDAO {
         try {
             Connection con = PoolConexiones.getConnection();
             PreparedStatement st = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            st.stInt(1, KeysDAO.siguienteID("clientes"));
+            st.setInt(1, KeysDAO.siguienteId("clientes"));
             st.setString(2, cliente.getNombre());
-            st.setString(3, cliente.getPass());
+            st.setString(3, cliente.getPassword());
             st.setString(4, cliente.getDomicilio());
-            st.setString(5, cliente.getCP());
+            st.setString(5, cliente.getCp());
             st.setString(6, cliente.getTelefono());
             st.setString(7, cliente.getEmail());
             
