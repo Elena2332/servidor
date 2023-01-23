@@ -5,8 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Registro</title>
+	<meta charset="ISO-8859-1">
+	<title>Registro</title>
 </head>
 <body>
 	<form action="ServletRegistro" method="post">

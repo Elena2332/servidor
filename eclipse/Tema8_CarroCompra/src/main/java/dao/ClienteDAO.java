@@ -23,9 +23,9 @@ public class ClienteDAO {
             st.setString(1, nom);
             st.setString(2, pass);
             ResultSet rs = st.executeQuery();
-            if(rs.next()){     
+            if(rs.next())
                 cliente = new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("password"),rs.getString("domicilio"),rs.getString("codigopostal"),rs.getString("telefono"),rs.getString("email"));
-            }
+            
             rs.close();
             st.close();
             con.close();
@@ -47,9 +47,9 @@ public class ClienteDAO {
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, nom);
             ResultSet rs = st.executeQuery();
-            if(rs.next()){     
+            if(rs.next())
                 return true;
-            }
+            
             rs.close();
             st.close();
             con.close();
@@ -64,7 +64,6 @@ public class ClienteDAO {
 	
 	public static boolean guardarCliente(Cliente cliente)
 	{        
-        int id = -1;
         String sql = "INSERT INTO clientes(id, nombre, password, domicilio, codigopostal, telefono, email) VALUES(?, ?, ?, ?, ?, ?, ?)";
         try {
             Connection con = PoolConexiones.getConnection();
@@ -77,27 +76,42 @@ public class ClienteDAO {
             st.setString(6, cliente.getTelefono());
             st.setString(7, cliente.getEmail());
             
-            st.executeUpdate();
-            
-            ResultSet rs = st.getGeneratedKeys();
-            if(rs.next()){
-                id = rs.getInt(1);
-            }
-            
-            rs.close();
+            st.execute();
+
             st.close();
             con.close();
+            return true;
         } catch (SQLException ex) {
         	System.out.println("Error en guardarCliente()");
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage());	        
+            return false;
         }
-	        
-		return true;
 	}
 	
 	public static boolean actualizarCliente(Cliente cliente)
 	{
-		return true;
+		String sql = "UPDATE clientes set nombre=?, password=?, domicilio=?, codigopostal=?, telefono=?, email=?) where id = ? ";
+        try {
+            Connection con = PoolConexiones.getConnection();
+            PreparedStatement st = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            st.setInt(7, KeysDAO.siguienteId("clientes"));
+            st.setString(1, cliente.getNombre());
+            st.setString(2, cliente.getPassword());
+            st.setString(3, cliente.getDomicilio());
+            st.setString(4, cliente.getCp());
+            st.setString(5, cliente.getTelefono());
+            st.setString(6, cliente.getEmail());
+            
+            st.execute();
+
+            st.close();
+            con.close();
+            return true;
+        } catch (SQLException ex) {
+        	System.out.println("Error en actualizarCliente()");
+            System.out.println(ex.getMessage());	        
+            return false;
+        }
 	}
 	
 }
