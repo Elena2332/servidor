@@ -1,2 +1,0 @@
-INDEX VERSION 1.131+C:\wamp64\www\servidor\UD5_eclipse\Tema5\.metadata\.plugins\org.eclipse.jdt.core
-1865797976.index

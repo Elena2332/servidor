@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.CarroCompra;
 import dao.PedidoDAO;
@@ -44,8 +45,13 @@ public class ServletAgregarLineaPedido extends HttpServlet {
 	
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		request.getSession().setAttribute("carro", new CarroCompra());
+		HttpSession session = request.getSession(true);  //retoma la sesion
+		CarroCompra carro = (CarroCompra) session.getAttribute("carro");
+		if(carro == null)
+			session.setAttribute("carro", new CarroCompra());
 	
+		
+		
 	}
 
 }

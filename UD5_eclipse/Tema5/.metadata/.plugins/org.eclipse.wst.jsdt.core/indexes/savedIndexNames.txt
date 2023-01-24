@@ -1,8 +1,0 @@
-INDEX VERSION 1.4+C:\wamp64\www\servidor\UD5_eclipse\Tema5\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-2024326553.index
-472109288.index
-2356011476.index
-1699837366.index
-1125397791.index
-2718256128.index
-2403836317.index
