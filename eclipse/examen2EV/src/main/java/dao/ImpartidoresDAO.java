@@ -37,10 +37,10 @@ public class ImpartidoresDAO {
 	}
 	
 	
-	public ArrayList<Actividad> getActividades(int id)   // devuelve todas las actividades del impartidor
+	public static ArrayList<Actividad> getActividades(int id)   // devuelve todas las actividades del impartidor
 	{
 		ArrayList<Actividad> actividades = new ArrayList<Actividad>();
-		String sql = "SELECT * FROM actividad where impartidor_id in ( select ...) ";  
+		String sql = "SELECT * FROM actividad where impartidor_id in ( select id from impartidor where id = ?) ";  
         Connection con;
         try {
             con = ConexPoolBD.getConnection();
