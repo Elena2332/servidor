@@ -52,7 +52,8 @@ public class ServletLogin extends HttpServlet {
 			}else {
 				request.getRequestDispatcher("index.jsp").include(request, response);
 			}
-		}else if(botonImpartidor!=null && !botonImpartidor.isBlank()) {
+		}
+		else if(botonImpartidor!=null && !botonImpartidor.isBlank()) {
 			Impartidor impartidor= loginImpartidor(request.getParameter("usuario"), request.getParameter("password"));
 			request.setAttribute("impartidor", impartidor);   // guarda impartidor logeado
 			if(impartidor!=null) {

@@ -36,7 +36,7 @@
 					<tr>
 						<td>${acti.nombre}</td>
 						<td>${acti.coste_mensual}</td>
-						<td>${acti.impartidor.nombre}</td>
+						<td>${acti.impartidor.nombre} ${acti.impartidor.apellido}</td>
 					</tr>
 				</c:forEach>
 			</table>
@@ -55,10 +55,10 @@
 				<c:forEach items="${actividadesPosibles}" var="acti">
 					<tr>
 						<td>${acti.nombre}</td>
-						<td>${acti.impartidor.nombre}</td>
+						<td>${acti.impartidor.nombre} ${acti.impartidor.apellido}</td>
 						<c:choose>
 							<c:when test="${inscripciones.contains(acti.id)}">	
-								<td><a href="ServletInscripcion?desapuntar=${acti.id}">ANULAR</a></td>
+								<td><a href="ServletInscripcion?quitar=${acti.id}">ANULAR</a></td>
 							</c:when>
 							<c:otherwise>
 								<td><a href="ServletInscripcion?apuntar=${acti.id}">APUNTARSE</a></td>

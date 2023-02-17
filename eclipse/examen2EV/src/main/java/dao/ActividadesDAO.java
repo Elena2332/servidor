@@ -17,7 +17,7 @@ public class ActividadesDAO {
 	public static ArrayList<Actividad> obtenerActividadesParticipa(String dni)
 	{
 		ArrayList<Actividad> actividades = new ArrayList<Actividad>();
-		String sql = "SELECT * FROM actividad WHERE id in (select actividad_id from participa WHERE alumno_dni=?)";
+		String sql = "SELECT * FROM actividad WHERE id in (select actividad_id from participa WHERE alumno_dni=?) order by nombre";
         Connection con;
         try {
             con = ConexPoolBD.getConnection();
@@ -47,9 +47,9 @@ public class ActividadesDAO {
 	{
 		ArrayList<Actividad> actividades = new ArrayList<Actividad>();
 		// actividades en las que el alumno no esta registrado y no coinciden en nombre con las que si esta
-		String sql = "SELECT * FROM actividad WHERE id not in "
-				+ "(select actividad_id from participa WHERE alumno_dni=? and nombre not in "
-				+ "	(select nombre from actividad where alumno_dni=?))";
+		String sql = "SELECT * FROM actividad WHERE id not in (select actividad_id from participa WHERE alumno_dni=?) "
+				+ "and nombre not in (select nombre from actividad where id in (select actividad_id from participa where alumno_dni = ?)) "
+				+ "order by nombre";
         Connection con;
         try {
             con = ConexPoolBD.getConnection();

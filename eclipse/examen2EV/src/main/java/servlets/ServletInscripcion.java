@@ -63,15 +63,17 @@ public class ServletInscripcion extends HttpServlet {
 			inscripciones.add(actividad);
 			session.setAttribute("inscripciones", inscripciones);		
 			session.setAttribute("cambios", inscripciones.size());
+			//System.out.println(inscripciones.size());
 		}
 		
 		//DESAPUNTAR actividades
-		if(request.getParameter("desapuntar") != null)
+		if(request.getParameter("quitar") != null)
 		{
-			Integer actividad = Integer.parseInt(request.getParameter("desapuntar"));
+			Integer actividad = Integer.parseInt(request.getParameter("quitar"));
 			inscripciones.remove(actividad);
 			session.setAttribute("inscripciones", inscripciones);
 			session.setAttribute("cambios", inscripciones.size());
+			//System.out.println(inscripciones.size());
 		}
 		
 		
@@ -102,10 +104,10 @@ public class ServletInscripcion extends HttpServlet {
 		
 		session.setAttribute("actividadesCursadas", ActividadesDAO.obtenerActividadesParticipa(alumno.getDni()));
 		session.setAttribute("actividadesPosibles", ActividadesDAO.obtenerActividadesLibresNoParticipa(alumno.getDni()));
-		ArrayList<Integer> inscripciones = (ArrayList<Integer>) session.getAttribute("inscripciones");
 		
 		if(session.getAttribute("inscripciones") == null)
 			session.setAttribute("inscripciones", new ArrayList<Integer>());    // id de las actividades que se va a apuntar
+		ArrayList<Integer> inscripciones = (ArrayList<Integer>) session.getAttribute("inscripciones");
 		session.setAttribute("cambios", inscripciones.size());
 		return session;
 	}
