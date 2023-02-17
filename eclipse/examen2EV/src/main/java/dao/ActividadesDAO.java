@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import beans.Actividad;
 import beans.Alumno;
@@ -99,5 +100,49 @@ public class ActividadesDAO {
             System.out.println(ex.getMessage());
         }
 		return actividad;
+	}
+	
+
+	
+	public static ArrayList<Actividad> getActividadesImpartidor(int id)   // devuelve todas las actividades del impartidor
+	{
+		ArrayList<Actividad> actividades = new ArrayList<Actividad>();
+		String sql = "SELECT * FROM actividad where impartidor_id in ( select id from impartidor where id = ?) ";  
+        Connection con;
+        try {
+            con = ConexPoolBD.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while(rs.next())
+            {
+            	int id_acti = rs.getInt("id");
+            	Impartidor impartidor = ImpartidoresDAO.getImpartidor(String.valueOf(id));
+            	String nombre = rs.getString("nombre");
+            	Double coste= rs.getDouble("coste_mensual");
+            	int cap = rs.getInt("capacidad");
+            	Actividad acti = new Actividad(id_acti,impartidor,nombre,coste,cap);
+            	actividades.add(acti);
+            }
+            
+            rs.close();
+            st.close();
+            con.close();
+        } catch (SQLException ex) {
+        	System.out.println("Error en getActividades()");
+            System.out.println(ex.getMessage());
+        }
+		return actividades;
+	}
+	
+	
+	public static HashMap<Alumno,String> mapaAsistenciaActividad(String id)
+	{
+		HashMap<Alumno,String> map = new HashMap<Alumno,String>();
+		ArrayList<Alumno> alumnos = AlumnosDAO.getAlumnosActividad(id);
+		for(Alumno al : alumnos)
+			map.put(al, ParticiparDAO.getUltimaAsistencia(id, al.getDni()));
+		
+		return map;
 	}
 }
