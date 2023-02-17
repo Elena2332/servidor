@@ -53,6 +53,7 @@
 				out.println("<tr><th>Nombre</th><th>Ultima asistencia</th><th>Tipo de aviso</th><th></th></tr>");
 				for(Alumno al : alumnos.keySet())
 				{
+					String[] arr = {al.getDni(),alumnos.get(al)};
 					out.println("<tr>");
 						out.println("<td>"+al.getNombre()+" "+al.getApellidos()+"</td>");
 						out.println("<td>"+alumnos.get(al)+"</td>");

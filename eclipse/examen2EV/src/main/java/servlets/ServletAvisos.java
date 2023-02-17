@@ -84,7 +84,7 @@ public class ServletAvisos extends HttpServlet {
 		{
 			String dni = request.getParameter("btnAvisar");
 			String tipo = request.getParameter("tipo");
-			
+			apuntarAviso(dni,fecha,tipo);
 			
 		}
 		
@@ -93,4 +93,8 @@ public class ServletAvisos extends HttpServlet {
 		request.getRequestDispatcher("impartidor.jsp").forward(request, response);    // va a impartidor.jsp
 	}
 		
+	public void apuntarAviso(String dni,String fecha, String tipo)
+	{
+		
+	}
 }
