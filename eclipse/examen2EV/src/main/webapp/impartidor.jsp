@@ -53,12 +53,12 @@
 				out.println("<tr><th>Nombre</th><th>Ultima asistencia</th><th>Tipo de aviso</th><th></th></tr>");
 				for(Alumno al : alumnos.keySet())
 				{
-					String[] arr = {al.getDni(),alumnos.get(al)};
+					String aux = al.getDni()+"-_-"+alumnos.get(al);
 					out.println("<tr>");
 						out.println("<td>"+al.getNombre()+" "+al.getApellidos()+"</td>");
 						out.println("<td>"+alumnos.get(al)+"</td>");
 						out.println("<td> <input type='radio' value='email' name='tipo' checked>Email   <input type='radio' value='telf' name='tipo'>Telefono</td>");
-						out.println("<td> <button type='submit' value='"+al.getDni()+"' name='btnAvisar'>Avisar</button> </td>");
+						out.println("<td> <button type='submit' value='"+aux+"' name='btnAvisar'>Avisar</button> </td>");
 					out.println("</tr>");
 				}
 				out.println("</table>");

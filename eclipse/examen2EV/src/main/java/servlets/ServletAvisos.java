@@ -1,5 +1,9 @@
 package servlets;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,9 +86,11 @@ public class ServletAvisos extends HttpServlet {
 		//AVISO
 		if(request.getParameter("tipo") != null  && request.getParameter("btnAvisar") != null)
 		{
-			String dni = request.getParameter("btnAvisar");
+			String[] arr = request.getParameter("btnAvisar").split("-_-");
+			String dni = arr[0];
 			String tipo = request.getParameter("tipo");
-			apuntarAviso(dni,fecha,tipo);
+			String fecha = arr[1];
+			apuntarAviso(dni,fecha,tipo);   // escribe en el fichero
 			
 		}
 		
@@ -95,6 +101,27 @@ public class ServletAvisos extends HttpServlet {
 		
 	public void apuntarAviso(String dni,String fecha, String tipo)
 	{
+		// Escribir en el fichero
+		String txt = dni+"-"+fecha+"-"+tipo;
+		String ruta = "avisos.txt";
+		try {
+			File file = new File(ruta);
+	        if (!file.exists())    // Si el archivo no existe se crea
+	            file.createNewFile();
+	        
+	        // escribir sin borrar
+	        FileWriter fw = new FileWriter(file, true);
+	        BufferedWriter bw = new BufferedWriter(fw);
+	        bw.write(txt);
+
+            bw.close();
+	 	}
+		 catch (Exception e) 
+        {
+	 		System.out.println("Error en apuntarAviso()");
+	 		e.printStackTrace();
+        }
+		
 		
 	}
 }
